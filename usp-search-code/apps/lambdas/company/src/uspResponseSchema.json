@@ -1,0 +1,625 @@
+{
+    "type": "object",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/Creditsafe.GlobalData.SearchResponse_1_Creditsafe.GlobalData.Company"
+        },
+        {
+            "$ref": "#/definitions/Connect.CompanySearch.NoResults"
+        }
+    ],
+    "definitions": {
+        "Creditsafe.GlobalData.SearchResponse_1_Creditsafe.GlobalData.Company": {
+            "allOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "correlationId": {
+                            "type": "string"
+                        },
+                        "messages": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CreditsafeGlobalDataMessage"
+                            }
+                        },
+                        "page": {
+                            "type": "integer"
+                        },
+                        "pageSize": {
+                            "type": "integer"
+                        },
+                        "totalSize": {
+                            "type": "integer"
+                        },
+                        "maxScore": {
+                            "type": "number"
+                        },
+                        "companies": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Creditsafe.GlobalData.Company"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "Connect.CompanySearch.NoResults": {
+            "type": "object",
+            "properties": {
+                "totalSize": {
+                    "type": "number"
+                },
+                "companies": {
+                    "type": "object"
+                },
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CreditsafeGlobalDataMessage"
+                    }
+                }
+            }
+        },
+        "Creditsafe.GlobalData.Company": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CompanyData"
+                }
+            ]
+        },
+        "Creditsafe.GlobalData.CompanyData": {
+            "type": "object",
+            "properties": {
+                "activity": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CompanyActivityClassification"
+                },
+                "activityCode": {
+                    "type": "string"
+                },
+                "acronym": {
+                    "type": "string"
+                },
+                "additionalData": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CompanyDataAdditionalData"
+                },
+                "address": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.AddressData"
+                },
+                "country": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CountryCode"
+                },
+                "dateOfLatestAccounts": {
+                    "type": "string"
+                },
+                "dateOfLatestChange": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "legalForm": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "officeType": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.OfficeType"
+                },
+                "phoneNumbers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "previousNames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "regNo": {
+                    "type": "string"
+                },
+                "safeNo": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "statusDescription": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CompanyType"
+                },
+                "vatNo": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreditsafeGlobalDataMessage": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/CreditsafeGlobalDataMessageType"
+                },
+                "code": {
+                    "$ref": "#/definitions/CreditsafeGlobalDataMessageCode"
+                },
+                "text": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreditsafeGlobalDataMessageType": {
+            "type": "string",
+            "enum": [
+                "Information",
+                "Warning",
+                "Error"
+            ]
+        },
+        "CreditsafeGlobalDataMessageCode": {
+            "type": "string",
+            "enum": [
+                "NoResults",
+                "TooManyResults",
+                "ReportUnavailable",
+                "ReportUnavailableDueToLegal",
+                "ReportUnavailableOnline",
+                "LegalNotice",
+                "InvalidCredentials",
+                "AccessRestricted",
+                "AccessLimitsNearing",
+                "InsufficientCustomerData",
+                "ReportboxAlmostFull",
+                "ReportboxFull",
+                "InvalidRequestXml",
+                "InvalidOperationParameters",
+                "OperationNotSupported",
+                "InvalidCustomData",
+                "ChangeNotification",
+                "TemporarySystemProblem",
+                "EndpointShutdown",
+                "UnexpectedInternalError",
+                "Other",
+                "DataServiceAccessProblems",
+                "DataServiceInvalidResponse"
+            ]
+        },
+        "Creditsafe.GlobalData.CompanyType": {
+            "type": "string"
+        },
+        "Creditsafe.GlobalData.OfficeType": {
+            "type": "string"
+        },
+        "Creditsafe.GlobalData.CompanyStatus": {
+            "type": "string"
+        },
+        "Creditsafe.GlobalData.AddressData": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string",
+                    "nullable": true
+                },
+                "county": {
+                    "type": "string"
+                },
+                "country": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CountryCode"
+                },
+                "directMarketingOptIn": {
+                    "type": "boolean",
+                    "nullable": true
+                },
+                "directMarketingOptOut": {
+                    "type": "boolean",
+                    "nullable": true
+                },
+                "houseNo": {
+                    "type": "string",
+                    "nullable": true
+                },
+                "line1": {
+                    "type": "string"
+                },
+                "line2": {
+                    "type": "string"
+                },
+                "line3": {
+                    "type": "string"
+                },
+                "postCode": {
+                    "type": "string",
+                    "nullable": true
+                },
+                "province": {
+                    "type": "string",
+                    "nullable": true
+                },
+                "simpleValue": {
+                    "type": "string",
+                    "nullable": true
+                },
+                "street": {
+                    "type": "string",
+                    "nullable": true
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "Creditsafe.GlobalData.CompanyActivityClassification": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "industrySector": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "classification": {
+                    "type": "string"
+                }
+            }
+        },
+        "Creditsafe.GlobalData.CompanyDataAdditionalData": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.Reports.AdditionalData"
+                },
+                {
+                    "type": "object"
+                }
+            ]
+        },
+        "Creditsafe.GlobalData.Reports.AdditionalData": {
+            "type": "object"
+        },
+        "Creditsafe.GlobalData.CountryCode": {
+            "type": "string",
+            "enum": [
+                "AD",
+                "AE",
+                "AF",
+                "AG",
+                "AI",
+                "AL",
+                "AM",
+                "AN",
+                "AO",
+                "AQ",
+                "AR",
+                "AS",
+                "AT",
+                "AU",
+                "AW",
+                "AX",
+                "AZ",
+                "BA",
+                "BB",
+                "BD",
+                "BE",
+                "BF",
+                "BG",
+                "BH",
+                "BI",
+                "BJ",
+                "BL",
+                "BM",
+                "BN",
+                "BO",
+                "BR",
+                "BS",
+                "BT",
+                "BV",
+                "BW",
+                "BY",
+                "BZ",
+                "CA",
+                "CC",
+                "CD",
+                "CF",
+                "CG",
+                "CH",
+                "CI",
+                "CK",
+                "CL",
+                "CM",
+                "CN",
+                "CO",
+                "CR",
+                "CU",
+                "CV",
+                "CX",
+                "CY",
+                "CZ",
+                "DE",
+                "DJ",
+                "DK",
+                "DM",
+                "DO",
+                "DZ",
+                "EC",
+                "EE",
+                "EG",
+                "EH",
+                "ER",
+                "ES",
+                "ET",
+                "FI",
+                "FJ",
+                "FK",
+                "FM",
+                "FO",
+                "FR",
+                "GA",
+                "GB",
+                "GD",
+                "GE",
+                "GF",
+                "GG",
+                "GH",
+                "GI",
+                "GL",
+                "GM",
+                "GN",
+                "GP",
+                "GQ",
+                "GR",
+                "GS",
+                "GT",
+                "GU",
+                "GW",
+                "GY",
+                "HK",
+                "HM",
+                "HN",
+                "HR",
+                "HT",
+                "HU",
+                "ID",
+                "IE",
+                "IL",
+                "IM",
+                "IN",
+                "IO",
+                "IQ",
+                "IR",
+                "IS",
+                "IT",
+                "JE",
+                "JM",
+                "JO",
+                "JP",
+                "KE",
+                "KG",
+                "KH",
+                "KI",
+                "KM",
+                "KN",
+                "KP",
+                "KR",
+                "KW",
+                "KY",
+                "KZ",
+                "LA",
+                "LB",
+                "LC",
+                "LI",
+                "LK",
+                "LR",
+                "LS",
+                "LT",
+                "LU",
+                "LV",
+                "LY",
+                "MA",
+                "MC",
+                "MD",
+                "ME",
+                "MF",
+                "MG",
+                "MH",
+                "MK",
+                "ML",
+                "MM",
+                "MN",
+                "MO",
+                "MP",
+                "MQ",
+                "MR",
+                "MS",
+                "MT",
+                "MU",
+                "MV",
+                "MW",
+                "MX",
+                "MY",
+                "MZ",
+                "NA",
+                "NC",
+                "NE",
+                "NF",
+                "NG",
+                "NI",
+                "NL",
+                "NO",
+                "NP",
+                "NR",
+                "NU",
+                "NZ",
+                "OM",
+                "PA",
+                "PE",
+                "PF",
+                "PG",
+                "PH",
+                "PK",
+                "PL",
+                "PLC",
+                "PM",
+                "PN",
+                "PR",
+                "PS",
+                "PT",
+                "PW",
+                "PY",
+                "QA",
+                "RE",
+                "RO",
+                "RS",
+                "RU",
+                "RW",
+                "SA",
+                "SB",
+                "SC",
+                "SD",
+                "SE",
+                "SG",
+                "SH",
+                "SI",
+                "SJ",
+                "SK",
+                "SL",
+                "SM",
+                "SN",
+                "SO",
+                "SR",
+                "SS",
+                "ST",
+                "SV",
+                "SY",
+                "SZ",
+                "TC",
+                "TD",
+                "TF",
+                "TG",
+                "TH",
+                "TJ",
+                "TK",
+                "TL",
+                "TM",
+                "TN",
+                "TO",
+                "TR",
+                "TT",
+                "TV",
+                "TW",
+                "TZ",
+                "UA",
+                "UG",
+                "UM",
+                "US",
+                "UY",
+                "UZ",
+                "VA",
+                "VC",
+                "VE",
+                "VG",
+                "VI",
+                "VN",
+                "VU",
+                "WF",
+                "WS",
+                "XK",
+                "YE",
+                "YT",
+                "ZA",
+                "ZM",
+                "ZW"
+            ]
+        },
+        "Creditsafe.GlobalData.CountryCodes": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Creditsafe.GlobalData.CountryCode"
+            }
+        },
+        "CompanySearch.InputParameters": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "$ref": "#/components/parameters/page/schema"
+                },
+                "pageSize": {
+                    "$ref": "#/components/parameters/pageSize/schema"
+                },
+                "countries": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CountryCodes"
+                },
+                "id": {
+                    "$ref": "#/components/parameters/id/schema"
+                },
+                "safeNo": {
+                    "$ref": "#/components/parameters/safeNo/schema"
+                },
+                "regNo": {
+                    "$ref": "#/components/parameters/regNo/schema"
+                },
+                "vatNo": {
+                    "$ref": "#/components/parameters/vatNo/schema"
+                },
+                "name": {
+                    "$ref": "#/components/parameters/name/schema"
+                },
+                "tradeName": {
+                    "$ref": "#/components/parameters/tradeName/schema"
+                },
+                "acronym": {
+                    "$ref": "#/components/parameters/acronym/schema"
+                },
+                "exact": {
+                    "$ref": "#/components/parameters/exact/schema"
+                },
+                "address": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.AddressData/properties/simpleValue"
+                },
+                "street": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.AddressData/properties/street"
+                },
+                "city": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.AddressData/properties/city"
+                },
+                "postCode": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.AddressData/properties/postCode"
+                },
+                "province": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.AddressData/properties/province"
+                },
+                "officeType": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.OfficeType"
+                },
+                "phoneNo": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CompanyStatus"
+                },
+                "type": {
+                    "$ref": "#/definitions/Creditsafe.GlobalData.CompanyType"
+                },
+                "website": {
+                    "$ref": "#/components/parameters/website/schema"
+                }
+            },
+            "required": [
+                "countries"
+            ]
+        }
+    }
+}

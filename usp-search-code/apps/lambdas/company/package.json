@@ -1,0 +1,59 @@
+{
+  "name": "@usp-monorepo/usp-company-search",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.mjs",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "transformCriterias": "node ./build/pre-build.mjs && eslint --fix ../../core/config/companyInternalCriterias.mjs",
+    "prebuild": "pnpm run transformCriterias",
+    "build": "rollup -c rollup.config.mjs",
+    "test": "node --test-reporter=spec --test \"test/*\"",
+    "localTest": "node --env-file=../../../.env ./localTests/handlerTestCases.mjs",
+    "localTestOnly": "node --env-file=../../../.env --test-only --test \"test/*\"",
+    "localTestNamePattern": "node --env-file=../../../.env --test-name-pattern=\"^USP\" --test \"test/*\"",
+    "refset": "node --env-file=../../../.env ./localTests/referenceSet.mjs",
+    "coverage": "c8 --check-coverage --reporter=lcov --reporter=text npm run test",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^2.22.0",
+    "@aws-lambda-powertools/tracer": "^2.22.0",
+    "@middy/core": "^6.3.2",
+    "@middy/http-error-handler": "^6.3.2",
+    "@middy/http-event-normalizer": "^6.3.2",
+    "@middy/http-response-serializer": "^6.3.2",
+    "@middy/input-output-logger": "^6.3.2",
+    "@opensearch-project/opensearch": "^3.5.1",
+    "@usp-monorepo/usp-core": "workspace:*",
+    "ajv": "^8.17.1",
+    "csv-writer": "^1.6.0",
+    "fold-to-ascii": "^5.0.1",
+    "http-errors": "^2.0.0",
+    "json-schema-deref-sync": "^0.14.0",
+    "lodash": "^4.17.21",
+    "query-string": "^9.2.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.25.9",
+    "@babel/plugin-syntax-import-assertions": "^7.26.0",
+    "c8": "^10.1.3",
+    "eslint": "^9.17.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "esmock": "^2.6.9",
+    "fast-levenshtein": "^3.0.0",
+    "rollup": "^4.30.0"
+  },
+  "c8": {
+    "lines": 78,
+    "functions": 66,
+    "statements": 78,
+    "branches": 84
+  }
+}

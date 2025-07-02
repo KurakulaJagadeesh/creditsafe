@@ -1,0 +1,75 @@
+ gitGraph:
+    checkout main
+    commit tag:"v1.0.0"
+    branch develop
+    branch test
+    branch staging
+    branch feature/1
+    checkout feature/1
+    commit id:"F1-1"
+    commit id:"F1-2"
+    checkout develop
+    merge feature/1 id:"PR Feature1 into Develop"
+    checkout main
+    branch feature/2
+    checkout feature/2
+    commit id:"F2-1"
+    commit id:"F2-2"
+    commit id:"F2-3"
+    branch feature/2-develop-conflicts
+    checkout feature/2-develop-conflicts
+    merge develop id:"PR Develop into Feature2 Develop Conflicts"
+    checkout develop
+    merge feature/2-develop-conflicts id:"PR Feature2 Develop Conflicts into Develop"
+    checkout test
+    merge feature/1 id:"PR Feature1 into Test"
+    checkout staging
+    merge feature/1 id:"PR Feature1 into Staging"
+    checkout main
+    branch release/v1.1.0
+    checkout release/v1.1.0
+    merge feature/1 id:"PR Feature1 into Release v1.1.0"
+    checkout main
+    merge release/v1.1.0 id:"PR Release v1.1.0 into Main" tag:"v1.1.0"
+    branch hotfix/v1.1.1
+    commit id:"HF1-1"
+    checkout main
+    merge hotfix/v1.1.1 id:"PR Hotfix v1.1.1 into Main" tag:"v1.1.1"
+    checkout staging
+    merge hotfix/v1.1.1 id:"PR Hotfix v1.1.1 into Staging"
+    checkout test
+    merge hotfix/v1.1.1 id:"PR Hotfix v1.1.1 into Test"
+    checkout develop
+    merge hotfix/v1.1.1 id:"PR Hotfix v1.1.1 into Develop"
+    checkout test
+    merge feature/2 id:"PR Feature2 into Test: 1"
+    checkout feature/2
+    commit id:"F2-4"
+    checkout develop
+    merge feature/2 id:"PR Feature2 into Develop"
+    checkout test
+    merge feature/2 id:"PR Feature2 into Test: 2"
+    checkout staging
+    merge feature/2 id:"PR Feature2 into Staging"
+    checkout main
+    branch release/v1.2.0
+    checkout release/v1.2.0
+    merge feature/2 id:"PR Feature2 into Release v1.2.0"
+    checkout main
+    merge release/v1.2.0 id:"PR Release v1.2.0 into Main" tag:"v1.2.0"
+    checkout main
+    branch bugfix/1
+    checkout bugfix/1
+    commit id:"BF1-1"
+    checkout develop
+    merge bugfix/1 id:"PR BugFix1 into Develop"
+    checkout test
+    merge bugfix/1 id:"PR BugFix1 into Test"
+    checkout staging
+    merge bugfix/1 id:"PR BugFix1 into Staging"
+    checkout main
+    branch release/v1.2.1
+    checkout release/v1.2.1
+    merge bugfix/1 id:"PR Feature2 into Release v1.2.1"
+    checkout main
+    merge release/v1.2.1 id:"PR Release v1.2.1 into Main" tag:"v1.2.1"
