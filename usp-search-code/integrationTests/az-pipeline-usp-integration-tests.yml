@@ -1,0 +1,85 @@
+trigger: none
+
+pool: Linux-Latest
+
+parameters:
+  - name: environment
+    type: string
+    displayName: Environment to run tests against
+    default: "prod"
+    values:
+      - dev
+      - test
+      - staging
+      - prod
+
+schedules:
+  - cron: "0 0 * * *"
+    displayName: daily midnight build
+    branches:
+      include:
+        - main
+
+stages:
+  - stage: runLint
+    displayName: Run Linter
+    condition: eq(variables['Build.Reason'], 'PullRequest')
+    dependsOn:
+    jobs:
+      - job: linter
+        steps:
+          - task: NodeTool@0
+            displayName: "Install Node.js"
+            inputs:
+              versionSpec: "22.x"
+          - task: Cache@2
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(Pipeline.Workspace)/.pnpm-store
+            displayName: Cache pnpm
+          - script: |
+              corepack enable
+              corepack prepare pnpm@latest-9 --activate
+              pnpm config set store-dir $(Pipeline.Workspace)/.pnpm-store
+            displayName: "Setup pnpm"
+          - script: pnpm install --frozen-lockfile
+            displayName: "pnpm install --frozen-lockfile"
+            workingDirectory: "$(Build.SourcesDirectory)"
+          - script: pnpm run lint
+            displayName: "linting"
+            workingDirectory: "$(Build.SourcesDirectory)/integrationTests"
+
+  - stage: runTests
+    displayName: Run Integration Tests
+    condition: ne(variables['Build.Reason'], 'PullRequest')
+    dependsOn:
+    jobs:
+      - job: integrationTests
+        steps:
+          - task: NodeTool@0
+            displayName: "Install Node.js"
+            inputs:
+              versionSpec: "22.x"
+          - task: Cache@2
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(Pipeline.Workspace)/.pnpm-store
+            displayName: Cache pnpm
+          - script: |
+              corepack enable
+              corepack prepare pnpm@latest-9 --activate
+              pnpm config set store-dir $(Pipeline.Workspace)/.pnpm-store
+            displayName: "Setup pnpm"
+          - script: pnpm install --frozen-lockfile
+            displayName: "pnpm install --frozen-lockfile"
+            workingDirectory: "$(Build.SourcesDirectory)"
+          - script: NODE_ENV=${{ parameters.environment }} node --test-reporter=spec --test-reporter=junit --test-reporter-destination=stdout --test-reporter-destination=junit.xml --test "integrationTests/*"
+            displayName: "integration tests"
+            workingDirectory: "$(Build.SourcesDirectory)/integrationTests"
+          - task: PublishTestResults@2
+            displayName: "Publish Test Results"
+            continueOnError: true
+            condition: always()
+            inputs:
+              testResultsFiles: $(Build.SourcesDirectory)/integrationTests/junit.xml
+              mergeTestResults: true
