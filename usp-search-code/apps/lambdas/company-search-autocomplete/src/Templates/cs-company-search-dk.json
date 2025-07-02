@@ -1,0 +1,579 @@
+{
+    "order": 1,
+    "template": "cs-company-search-dk*",
+    "mappings": {
+        "properties": {
+            "@timestamp": {
+                "type": "date"
+            },
+            "@version": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "activityCodes": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "address": {
+                "properties": {
+                    "city": {
+                        "type": "text",
+                        "fields": {
+                            "autocomplete": {
+                                "type": "completion",
+                                "analyzer": "autocomplete_analyzer",
+                                "contexts": [
+                                    {
+                                        "name": "country",
+                                        "type": "CATEGORY",
+                                        "path": "countryCode"
+                                    },
+                                    {
+                                        "name": "postCode",
+                                        "type": "CATEGORY",
+                                        "path": "address.postCode.raw"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "CATEGORY",
+                                        "path": "status"
+                                    }
+                                ]
+                            },
+                            "ngram": {
+                                "type": "text",
+                                "analyzer": "Address_keep_only_ngram_chars_analyzer"
+                            },
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "company_city_analyzer"
+                    },
+                    "line1": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "conjoined_Analyzer"
+                    },
+                    "postCode": {
+                        "properties": {
+                            "raw": {
+                                "type": "text",
+                                "fields": {
+                                    "autocomplete": {
+                                        "type": "completion",
+                                        "analyzer": "autocomplete_analyzer",
+                                        "contexts": [
+                                            {
+                                                "name": "city",
+                                                "type": "CATEGORY",
+                                                "path": "address.city"
+                                            },
+                                            {
+                                                "name": "country",
+                                                "type": "CATEGORY",
+                                                "path": "countryCode"
+                                            },
+                                            {
+                                                "name": "status",
+                                                "type": "CATEGORY",
+                                                "path": "status"
+                                            }
+                                        ]
+                                    },
+                                    "keyword": {
+                                        "type": "keyword"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "province": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "address_analyzer"
+                    },
+                    "region": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "address_analyzer"
+                    },
+                    "simpleValue": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        },
+                        "analyzer": "address_analyzer"
+                    }
+                }
+            },
+            "companyId": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "connectId": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "countryCode": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "dateOfLatestChange": {
+                "type": "date"
+            },
+            "incorporationDate": {
+                "type": "date"
+            },
+            "name": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion",
+                        "analyzer": "autocomplete_analyzer",
+                        "contexts": [
+                            {
+                                "name": "city",
+                                "type": "CATEGORY",
+                                "path": "address.city"
+                            },
+                            {
+                                "name": "country",
+                                "type": "CATEGORY",
+                                "path": "countryCode"
+                            },
+                            {
+                                "name": "postCode",
+                                "type": "CATEGORY",
+                                "path": "address.postCode.raw"
+                            },
+                            {
+                                "name": "status",
+                                "type": "CATEGORY",
+                                "path": "status"
+                            }
+                        ]
+                    },
+                    "fallback": {
+                        "type": "text",
+                        "analyzer": "keep_only_ngram_chars_analyzer"
+                    },
+                    "da": {
+                        "type": "text",
+                        "analyzer": "danish"
+                    },
+                    "plain": {
+                        "type": "text",
+                        "analyzer": "name_analyzer"
+                    },
+                    "raw": {
+                        "type": "keyword",
+                        "normalizer": "lowercase_normalizer"
+                    },
+                    "synonyms": {
+                        "type": "text",
+                        "analyzer": "name_synonyms"
+                    }
+                },
+                "analyzer": "company_name_analyzer"
+            },
+            "officeType": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "organization": {
+                "properties": {
+                    "form": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "formDescriptionDanish": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                }
+            },
+            "organizationFormDescriptionEnglish": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "phoneNumbers": {
+                "properties": {
+                    "raw": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "recordStatus": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "regNo": {
+                "properties": {
+                    "raw": {
+                        "type": "keyword",
+                        "normalizer": "lowercase_normalizer"
+                    }
+                }
+            },
+            "safeNo": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "status": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "statusCode": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "statusDescription": {
+                "properties": {
+                    "da": {
+                        "type": "keyword",
+                        "normalizer": "lowercase_normalizer"
+                    },
+                    "en": {
+                        "type": "keyword",
+                        "normalizer": "lowercase_normalizer"
+                    }
+                }
+            },
+            "vatNo": {
+                "properties": {
+                    "full": {
+                        "type": "keyword"
+                    },
+                    "raw": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        }
+    },
+    "settings": {
+        "index": {
+            "analysis": {
+                "analyzer": {
+                    "address_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "Address_keep_only_ngram_chars_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "remove_empty"
+                        ],
+                        "char_filter": [
+                            "remove_all_but_letters_and_digits_filter"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "edge_ngram_postcode"
+                    },
+                    "autocomplete_analyzer": {
+                        "type": "custom",
+                        "filter": [
+                            "lowercase",
+                            "asciifolding"
+                        ],
+                        "tokenizer": "autocomplete_tokenizer"
+                    },
+                    "company_city_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding",
+                            "city_synonyms"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "company_name_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding",
+                            "company_name_synonyms",
+                            "stop",
+                            "stemmer"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "company_name_pattern_analyzer": {
+                        "filter": [
+                            "asciifolding",
+                            "lowercase"
+                        ],
+                        "char_filter": [
+                            "remove_expression_groups"
+                        ],
+                        "tokenizer": "pattern"
+                    },
+                    "conjoined_Analyzer": {
+                        "filter": [
+                            "asciifolding",
+                            "lowercase",
+                            "conjoined_gaden_filter",
+                            "conjoined_pladsen_filter",
+                            "conjoined_straedet_filter",
+                            "conjoined_torvet_filter",
+                            "conjoined_vejen_filter"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "edge_ngram_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "ascii_folding"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "edge_ngram_tokenizer"
+                    },
+                    "keep_only_ngram_chars_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "remove_empty"
+                        ],
+                        "char_filter": [
+                            "remove_all_but_letters_and_digits_filter"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "edge_ngram_tokenizer"
+                    },
+                    "lowercase_analyzer": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "name_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "name_synonyms": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding",
+                            "company_name_synonyms"
+                        ],
+                        "tokenizer": "whitespace"
+                    },
+                    "phone_analyzer": {
+                        "char_filter": [
+                            "strip_non_digit"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "prefixes": {
+                        "filter": [
+                            "asciifolding",
+                            "lowercase"
+                        ],
+                        "char_filter": [
+                            "strip_non_alphanum"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "prefixes_ngram"
+                    },
+                    "search_prefixes": {
+                        "filter": [
+                            "asciifolding",
+                            "lowercase",
+                            "truncate_prefix"
+                        ],
+                        "char_filter": [
+                            "strip_non_alphanum"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "keyword"
+                    },
+                    "url_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "www_prefix_filter",
+                            "split_words"
+                        ],
+                        "tokenizer": "classic"
+                    },
+                    "whitespace_lowercase": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "tokenizer": "whitespace"
+                    },
+                    "whitespace_lowercase_company_name": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "tokenizer": "whitespace"
+                    }
+                },
+                "char_filter": {
+                    "remove_all_but_letters_and_digits_filter": {
+                        "pattern": "[^A-Za-z0-9]",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "remove_expression_groups": {
+                        "pattern": "([\\.,'\"-])",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "strip_non_alphanum": {
+                        "pattern": "[^0-9a-zA-Z]",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "strip_non_digit": {
+                        "pattern": "\\D",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    }
+                },
+                "filter": {
+                    "ascii_folding": {
+                        "type": "asciifolding",
+                        "preserve_original": "true"
+                    },
+                    "city_synonyms": {
+                        "type": "synonym",
+                        "synonyms": [
+                            "københavn, copenhagen, copenhague, københavn k"
+                        ]
+                    },
+                    "company_name_synonyms": {
+                        "type": "synonym",
+                        "synonyms": [
+                            "as, a/s",
+                            "og, och",
+                            "denmark, danmark",
+                            "dansk, danske, dansker",
+                            "ltd, limited"
+                        ]
+                    },
+                    "conjoined_gaden_filter": {
+                        "pattern": "(gaden)$",
+                        "type": "pattern_replace",
+                        "replacement": "gade"
+                    },
+                    "conjoined_pladsen_filter": {
+                        "pattern": "(pladsen)$",
+                        "type": "pattern_replace",
+                        "replacement": "plads"
+                    },
+                    "conjoined_straedet_filter": {
+                        "pattern": "(strædet)$",
+                        "type": "pattern_replace",
+                        "replacement": "stræde"
+                    },
+                    "conjoined_torvet_filter": {
+                        "pattern": "(torvet)$",
+                        "type": "pattern_replace",
+                        "replacement": "torv"
+                    },
+                    "conjoined_vejen_filter": {
+                        "pattern": "(vejen|vænget)$",
+                        "type": "pattern_replace",
+                        "replacement": "vej"
+                    },
+                    "edge_ngram_filter": {
+                        "type": "edge_ngram",
+                        "min_gram": "1",
+                        "max_gram": "24"
+                    },
+                    "remove_empty": {
+                        "type": "length",
+                        "min": "1"
+                    },
+                    "split_words": {
+                        "type": "word_delimiter",
+                        "split_on_numerics": "false"
+                    },
+                    "truncate_prefix": {
+                        "length": "15",
+                        "type": "truncate"
+                    },
+                    "www_prefix_filter": {
+                        "pattern": "(?:www\\d?)",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    }
+                },
+                "normalizer": {
+                    "lowercase_normalizer": {
+                        "filter": [
+                            "lowercase"
+                        ]
+                    }
+                },
+                "tokenizer": {
+                    "autocomplete_tokenizer": {
+                        "type": "simple_pattern",
+                        "pattern": "([^ ]&(\\W+|\\_+))+|\\d+|[a-zA-Z]+"
+                    },
+                    "edge_ngram_postcode": {
+                        "token_chars": [
+                            "letter",
+                            "digit"
+                        ],
+                        "min_gram": "2",
+                        "type": "edge_ngram",
+                        "max_gram": "24"
+                    },
+                    "edge_ngram_tokenizer": {
+                        "token_chars": [
+                            "letter",
+                            "digit"
+                        ],
+                        "min_gram": "3",
+                        "type": "edge_ngram",
+                        "max_gram": "24"
+                    },
+                    "prefixes_ngram": {
+                        "type": "edge_ngram",
+                        "min_gram": "1",
+                        "max_gram": "15"
+                    }
+                }
+            }
+        }
+    }
+}

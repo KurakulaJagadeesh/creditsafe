@@ -1,0 +1,227 @@
+parameters:
+  - name: AppDir
+    type: string
+  - name: FunctionName
+    type: string
+
+stages:
+  - stage: runTestsAndCoverage
+    displayName: Run Tests & Coverage
+    dependsOn:
+    jobs:
+      - job: Quality_Checks
+        steps:
+          - checkout: self
+            submodules: false
+            persistCredentials: true
+          - task: NodeTool@0
+            displayName: "Install Node.js"
+            inputs:
+              versionSpec: "22.x"
+          - task: Cache@2
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(Pipeline.Workspace)/.pnpm-store
+            displayName: Cache pnpm
+          - script: |
+              corepack enable
+              corepack prepare pnpm@latest-9 --activate
+              pnpm config set store-dir $(Pipeline.Workspace)/.pnpm-store
+            displayName: "Setup pnpm"
+          - script: pnpm install --frozen-lockfile
+            displayName: "pnpm install --frozen-lockfile"
+          - script: |
+              echo pnpm run coverage
+              pnpm run coverage
+            displayName: "pnpm run coverage"
+            workingDirectory: "$(Build.SourcesDirectory)/apps/lambdas/${{parameters.AppDir}}"
+            env:
+              LOG_LEVEL: SILENT
+          - script: |
+              echo pnpm run lint
+              pnpm run lint
+            displayName: "pnpm run lint"
+            workingDirectory: "$(Build.SourcesDirectory)/apps/lambdas/${{parameters.AppDir}}"
+          - task: Bash@3
+            displayName: "pnpm vulnerabilities check"
+            inputs:
+              workingDirectory: "$(Build.SourcesDirectory)/apps/lambdas/${{parameters.AppDir}}"
+              targetType: inline
+              script: |
+                pnpm audit --audit-level=moderate
+          - task: Bash@3
+            displayName: "minor package dependencies update check"
+            inputs:
+              workingDirectory: "$(Build.SourcesDirectory)/apps/lambdas/${{parameters.AppDir}}"
+              targetType: inline
+              script: |
+                output=$(pnpx npm-check-updates --deep --format group --reject @usp-monorepo/usp-core --dep prod -u)
+                echo "$output"
+                if echo "$output" | grep -q 'Minor\|Patch'; then
+                  echo "##vso[task.logissue type=error] Minor and/or Patch updates available. Please update by running 'pnpx npm-check-updates --deep --format group --reject @usp-monorepo/usp-core --dep prod -u'"
+                  exit 1
+                else
+                  echo "No minor or patch updates available"
+                fi
+          - task: Bash@3
+            displayName: "major package dependencies update check"
+            continueOnError: true
+            inputs:
+              workingDirectory: "$(Build.SourcesDirectory)/apps/lambdas/${{parameters.AppDir}}"
+              targetType: inline
+              script: |
+                output=$(pnpx npm-check-updates --deep --format group --reject @usp-monorepo/usp-core --dep prod -u)
+                echo "$output"
+                if echo "$output" | grep -q 'Major'; then
+                  echo "##vso[task.logissue type=warning] Major updates are available, please consider updating by running 'pnpx npm-check-updates --deep --format group --reject @usp-monorepo/usp-core --dep prod -u'"
+                  exit 1
+                else
+                  echo "No major updates available"
+                fi
+  # DEVELOPMENT
+  - stage: buildAndUploadDev
+    displayName: Dev Build and Upload to S3
+    dependsOn: runTestsAndCoverage
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - template: buildAndUpload.yml
+        parameters:
+          AppDir: ${{ parameters.AppDir }}
+          Creds: "AWS Dev Account-Identity_Resolution"
+          Environment: dev
+          FunctionName: ${{ parameters.FunctionName }}
+
+  - stage: updateLambdaDev
+    displayName: Update Dev Lambda
+    dependsOn: buildAndUploadDev
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - template: deployLambda.yml
+        parameters:
+          Creds: "AWS Dev Account-Identity_Resolution"
+          Environment: dev
+          FunctionName: ${{ parameters.FunctionName }}
+
+  # TEST
+  - stage: buildAndUploadTest
+    displayName: Test Build and Upload to S3
+    dependsOn: runTestsAndCoverage
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/test'))
+    jobs:
+      - template: buildAndUpload.yml
+        parameters:
+          AppDir: ${{ parameters.AppDir }}
+          Environment: test
+          Creds: "AWS Dev Account-Identity_Resolution"
+          FunctionName: ${{ parameters.FunctionName }}
+
+  - stage: updateLambdaTest
+    displayName: Update Test Lambda
+    dependsOn: buildAndUploadTest
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/test'))
+    jobs:
+      - template: deployLambda.yml
+        parameters:
+          Environment: test
+          Creds: "AWS Dev Account-Identity_Resolution"
+          FunctionName: ${{ parameters.FunctionName }}
+
+  # Staging
+  - stage: buildAndUploadStage
+    displayName: Stage Build and Upload to S3
+    dependsOn: runTestsAndCoverage
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/staging'))
+    jobs:
+      - template: buildAndUpload.yml
+        parameters:
+          AppDir: ${{ parameters.AppDir }}
+          Environment: stage
+          Creds: "AWS Prod Account"
+          FunctionName: ${{ parameters.FunctionName }}
+
+  - stage: updateLambdaStage
+    displayName: Update Stage Lambda
+    dependsOn: buildAndUploadStage
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/staging'))
+    jobs:
+      - template: deployLambda.yml
+        parameters:
+          Environment: stage
+          Creds: "AWS Prod Account"
+          FunctionName: ${{ parameters.FunctionName }}
+
+  # Production
+  - stage: buildAndUploadProd
+    displayName: Prod Build and Upload to S3
+    dependsOn: runTestsAndCoverage
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: buildAndUpload.yml
+        parameters:
+          AppDir: ${{ parameters.AppDir }}
+          Environment: prod
+          Creds: "AWS Prod Account"
+          FunctionName: ${{ parameters.FunctionName }}
+
+  - stage: updateLambdaProd
+    displayName: Update Prod Lambda
+    dependsOn: buildAndUploadProd
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: deployLambda.yml
+        parameters:
+          Environment: prod
+          Creds: "AWS Prod Account"
+          FunctionName: ${{ parameters.FunctionName }}
+
+  - stage: TriggerInfraPipeline
+    displayName: Trigger Infra Pipeline
+    dependsOn:
+      - updateLambdaDev
+      - updateLambdaTest
+      - updateLambdaStage
+      - updateLambdaProd
+    condition: |
+      and(
+        or(
+          eq(dependencies.updateLambdaDev.result, 'Succeeded'),
+          eq(dependencies.updateLambdaTest.result, 'Succeeded'),
+          eq(dependencies.updateLambdaStage.result, 'Succeeded'),
+          eq(dependencies.updateLambdaProd.result, 'Succeeded')
+        ),
+        and(
+          ne(variables['Build.Reason'], 'PullRequest'),
+          in(variables['Build.SourceBranch'], 'refs/heads/develop', 'refs/heads/test', 'refs/heads/staging', 'refs/heads/main')
+        )
+      )
+    jobs:
+      - job: TriggerInfraPipeline
+        steps:
+          - task: Bash@3
+            inputs:
+              workingDirectory: $(Pipeline.Workspace)
+              targetType: inline
+              script: |
+                echo "Initialising infra pipeline trigger script"
+                echo "Build.SourceBranch: $(Build.SourceBranch)"
+                echo "trigger-build-pat: $(trigger-build-pat)"
+
+                BRANCH_NAME=$(Build.SourceBranch)
+                USP_INFRA_PIPELINE_ID=5622        
+
+                b64PAT=`echo "$(trigger-build-pat):" | base64`
+
+                if [[ $(trigger-build-pat) != "" ]]; then
+                  URL=https://dev.azure.com/creditsafe/$(System.TeamProject)/_apis/pipelines/$USP_INFRA_PIPELINE_ID/runs?api-version=7.1-preview.1
+                  DATA='{"stagesToSkip":[],"resources":{"repositories":{"self":{"refName":"'"$BRANCH_NAME"'"}}}}'
+                  
+                  echo "Testing PAT against $URL"
+                  echo "Data: $DATA"
+
+                  TEST_RESPONSE_CODE=`curl -s -o response.txt -w "%{http_code}" -X POST -H "Authorization: Basic $b64PAT" -H "Content-Type: application/json" -d $DATA $URL`
+                  echo "Response code: $TEST_RESPONSE_CODE"
+                  echo "Response Body:"
+                  cat response.txt | jq
+                else
+                  echo "trigger-build-pat is missing or empty, skipping trigger"
+                fi

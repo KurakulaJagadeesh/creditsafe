@@ -1,0 +1,41 @@
+{
+  "name": "@usp-monorepo/usp-company-search-autocomplete",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A lambda function/endpoint to provide suggestions while searching companies",
+  "main": "index.mjs",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "rollup -c rollup.config.mjs",
+    "test": "node --test",
+    "localTest": "node --env-file=.env localTests/testLocal.mjs",
+    "coverage": "c8 --check-coverage --reporter=lcov --reporter=text npm run test",
+    "lint": "eslint ."
+  },
+  "author": "Search Team",
+  "license": "ISC",
+  "dependencies": {
+    "@middy/core": "^6.3.2",
+    "@middy/http-error-handler": "^6.3.2",
+    "@middy/http-event-normalizer": "^6.3.2",
+    "@middy/http-response-serializer": "^6.3.2",
+    "@middy/input-output-logger": "^6.3.2",
+    "@middy/validator": "^6.3.2",
+    "@opensearch-project/opensearch": "^3.5.1",
+    "@usp-monorepo/usp-core": "workspace:*",
+    "http-errors": "^2.0.0",
+    "lodash": "^4.17.21",
+    "rollup": "^4.44.0"
+  },
+  "devDependencies": {
+    "c8": "^10.1.3",
+    "eslint": "^9.17.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "esmock": "^2.6.9"
+  }
+}

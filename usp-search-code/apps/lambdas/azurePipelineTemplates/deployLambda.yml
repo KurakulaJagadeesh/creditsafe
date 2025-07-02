@@ -1,0 +1,20 @@
+parameters:
+  - name: Environment
+    type: string
+  - name: Creds
+    type: string
+  - name: FunctionName
+    type: string
+
+jobs:
+  - job: updateLambda
+    steps:
+      - task: LambdaDeployFunction@1
+        inputs:
+          awsCredentials: "${{parameters.Creds}}"
+          regionName: "eu-west-1"
+          deploymentMode: "codeonly"
+          functionName: "usp-${{parameters.Environment}}-${{parameters.FunctionName}}"
+          codeLocation: "s3object"
+          s3Bucket: "usp-${{parameters.Environment}}-lambda-bucket"
+          s3ObjectKey: "usp-${{parameters.Environment}}-${{parameters.FunctionName}}.zip"

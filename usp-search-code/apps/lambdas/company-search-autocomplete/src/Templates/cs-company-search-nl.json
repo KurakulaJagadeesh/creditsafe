@@ -1,0 +1,2223 @@
+{
+    "order": 1,
+    "template": "cs-company-search-nl*",
+    "settings": {
+        "index": {
+            "analysis": {
+                "filter": {
+                    "company_name_synonyms": {
+                        "type": "synonym",
+                        "synonyms": [
+                            "besloten vennootschap, b v, b.v, bv",
+                            "naamloze vennootschap, n v , n.v, nv",
+                            "v.o.f, fa, firma, vereniging onder firma, vennootschap onder firma vof, vof",
+                            "zoon, zonen, zn",
+                            "c.v, commanditaire vennootschap, commandite, cv",
+                            "stichting, stg, st",
+                            "nederland, nederlandse, nederlandsche, dutch, holland, netherlands, nederlands, nld, nl",
+                            "hollandsche, hollandse",
+                            "accountants, accountancy, accountantskantoor, accountant",
+                            "consultants, consulting, consultant",
+                            "too you, to you, 2 you, 2u",
+                            "for two, for too, for2",
+                            "for u, for you, four you, 4u, foru, foryou",
+                            "be4, be for, befour, before",
+                            "2, too, two",
+                            "choc, sjok",
+                            "beheer, houdstermaatschappij, holding",
+                            "in oprichting, i.o, io",
+                            "mts, maatschap",
+                            "vereniging, ver",
+                            "cooperaties, cooperatie",
+                            "eenmanszaak, eenmansbedrijf, ez",
+                            "4, for, four"
+                        ]
+                    },
+                    "conjoined_straat_filter": {
+                        "pattern": "(straat)$",
+                        "type": "pattern_replace",
+                        "replacement": "str"
+                    },
+                    "conjoined_laan_filter": {
+                        "pattern": "(laan)$",
+                        "type": "pattern_replace",
+                        "replacement": "ln"
+                    },
+                    "conjoined_weg_filter": {
+                        "pattern": "(weg)$",
+                        "type": "pattern_replace",
+                        "replacement": "wg"
+                    },
+                    "conjoined_singel_filter": {
+                        "pattern": "(singel)$",
+                        "type": "pattern_replace",
+                        "replacement": "sgl"
+                    },
+                    "conjoined_gracht_filter": {
+                        "pattern": "(gracht)$",
+                        "type": "pattern_replace",
+                        "replacement": "gt"
+                    },
+                    "conjoined_plaats_filter": {
+                        "pattern": "(plaats)$",
+                        "type": "pattern_replace",
+                        "replacement": "pl"
+                    },
+                    "conjoined_hof_filter": {
+                        "pattern": "(hof)$",
+                        "type": "pattern_replace",
+                        "replacement": "hf"
+                    },
+                    "conjoined_steeg_filter": {
+                        "pattern": "(steeg)$",
+                        "type": "pattern_replace",
+                        "replacement": "stg"
+                    },
+                    "conjoined_kade_filter": {
+                        "pattern": "(kade)$",
+                        "type": "pattern_replace",
+                        "replacement": "kd"
+                    },
+                    "address_synonyms": {
+                        "type": "synonym",
+                        "synonyms": [
+                            "Aagtekerke, Aegte",
+                            "Aalst, Aolst",
+                            "Aalsum, Ealsum",
+                            "Aarle-Rixtel, Ale, Aerle",
+                            "Abbega, Abbegea",
+                            "Achtmaal, Achmaol",
+                            "Acquoy, Akkooi",
+                            "Adorp, Oadörp",
+                            "Aduard, Auwerd",
+                            "Aegum, Agum, Eagum",
+                            "Aerdenhout, Aardenhout",
+                            "Agelo, Oagel",
+                            "Akmarijp, Eagmaryp",
+                            "Albergen, Albearge, Albeargn, Albearg",
+                            "Allingawier, Allingawier",
+                            "Almen, Alm'n",
+                            "Almkerk, Almkérk",
+                            "Alphen, Alphen-Oosterwijk, Alfen",
+                            "Alphen, Alphen aan de Maas",
+                            "Alteveer, Alteveer (Hoogeveen)",
+                            "Ambt Delden, Ambt Dealdn",
+                            "Amen, Aomen",
+                            "America, Amerika",
+                            "Amersfoort, Amersvoord",
+                            "Ammerstol, Ammers-tol",
+                            "Ammerzoden, Ammerooie, Ammeroois, Ammerooien",
+                            "Amstenrade, Awstroa, Austroa",
+                            "Amsterdam-Duivendrecht, Amsterdam Duivendrecht",
+                            "Andel, Ael",
+                            "Anderen, Aandern",
+                            "Andijk, Andoik",
+                            "Ane, Aone",
+                            "Anjum, Eanjum",
+                            "Anloo, Aanloo",
+                            "Annerveenschekanaal, Annerveensekenaol",
+                            "Ansen, Aansen",
+                            "Apeldoorn, Apeldoorne",
+                            "Appelscha, Appelsche, Appelskea",
+                            "Arcen, Árse",
+                            "Arnemuiden, Erremuu",
+                            "Arnhem, Ernem, Arnem",
+                            "Arriën, Arrien, Arrie",
+                            "Arum, Arum",
+                            "Asch, Aske",
+                            "Assen, Ass'n",
+                            "Asten, Ááste",
+                            "Augsbuurt, Lytsewâld, Lutjewolde",
+                            "Augustinusga, Stynsgea",
+                            "Avenhorn, Avehorre",
+                            "Axel, Aksel",
+                            "Azewijn, Azem",
+                            "Baaiduinen, Baaidunen",
+                            "Baak, Boak",
+                            "Baarland, Baerland, Bakendorp",
+                            "Baarle-Nassau, Baol, Baarle-Nassau Grens, Baarle-Grens, Baarle-Loveren",
+                            "Baarlo, Baolder",
+                            "Babyloniënbroek, Broek",
+                            "Bad Nieuweschans, Nieuweschans, Langeakkerschans",
+                            "Baexem, Beekkant, Boaksum, Boakse",
+                            "Baflo, Bavvelt",
+                            "Baijum, Baaium",
+                            "Bakhuizen, Bakhuzen",
+                            "Bakkeveen, Bakkefean",
+                            "Balgoij, Balgoy",
+                            "Balinge, Baoling",
+                            "Balkbrug, De Balk",
+                            "Balloërveld, Ballooërveld",
+                            "Balloo, Baal, Bal",
+                            "Baneheide, De Boanhei",
+                            "Bantega, Bantegea, Bantege",
+                            "Barger-Compascuum, Barger-Compas",
+                            "Barneveld, Barreveld, Bareveld",
+                            "Bathmen, Battûm",
+                            "Bavel, Bolberg, Eikberg, Lijndonk, Roosberg, Tervoort",
+                            "Bedum, Beem",
+                            "Beegden, Bieëgdje",
+                            "Beek, Bea:k, Beak",
+                            "Beek Lb, Baek",
+                            "Beekbergen, Bekbargen, Beekbargen",
+                            "Beers, Bears",
+                            "Beers NB, Bèèrs, Baers",
+                            "Beerta, Beerte, Beert, De Beerte",
+                            "Beertsterhamrik, Beetsterhammerk",
+                            "Beesd, Bist",
+                            "Beetgum, Bitgum",
+                            "Beetgumermolen, Bitgummole",
+                            "Beets, Beet",
+                            "Beetsterzwaag, Beetstersweach",
+                            "Belfeld, Belvend, Het Broek, Bolenberg",
+                            "Bellingwolde, Ben(ne)wolle, Bennewold",
+                            "Bemelen, Bieëmele",
+                            "Bentelo, Beantel",
+                            "Bergeijk, Bergeyk, Bérgààjk, Loo, Bergeik",
+                            "Bergen (L), Baerge",
+                            "Bergen (NH), Bergen",
+                            "Bergen op Zoom, Bèrrege",
+                            "Bergentheim, Banthum, Bantem",
+                            "Berghem, Bèrge, Berchem",
+                            "Bergum, Burgum",
+                            "Berkel-Enschot, Bèrkel",
+                            "Berkenwoude, Benedenheul, Benedenkerk",
+                            "Berkhout, Bobeldijk",
+                            "Berlicum, Balkum",
+                            "Berlikum, Berltsum",
+                            "Beuningen, Böaningn",
+                            "Beuningen Gld, Bunninge",
+                            "Beusichem, Beu-zi-chèm, Beuzichèm, bøzixɛm, Beuzichem",
+                            "Beutenaken, Böätenake",
+                            "Biddinghuizen, Bidningahusum",
+                            "Bierum, Baaierm",
+                            "Biezenmortel, Belvert",
+                            "Biggekerke, Beekerke",
+                            "Bingelrade, Bèngelder",
+                            "Birdaard, Burdaard",
+                            "Bladel, Blaal",
+                            "Blaricum, Bijvanck, Blarikum",
+                            "Blauwhuis, Blauhús",
+                            "Blesdijke, Blesdieke, Blesdike",
+                            "Blija, Blije",
+                            "Blitterswijck, Blitterswik",
+                            "Blokzijl, Blokziel",
+                            "Bocholtz, Bóches, Bocholtzerheide",
+                            "Boelenslaan, Boelensloane",
+                            "Boesingheliede, Boezingeliede",
+                            "Boijl, Buil, Boyl",
+                            "Bolsward, Boalsert",
+                            "Bontebok, Bontebok",
+                            "Boornbergum, Boarnburgum",
+                            "Boornzwaag, Boarnsweach",
+                            "Borculo, Borklo",
+                            "Borger, Börger",
+                            "Borgercompagnie, Börkomnij",
+                            "Borgsweer, Börgsweer",
+                            "Born, Bor",
+                            "Borne, Boorn",
+                            "Bornwird, Boarnwert",
+                            "Botlek Rotterdam, Botlek",
+                            "Bourtange, Boertange",
+                            "Boxmeer, Bóksmér",
+                            "Bozum, Boazum",
+                            "Braamt, Braomp",
+                            "Brakel, Bròkel",
+                            "Brandwijk, Braank, n, Braankse Donk",
+                            "Brantgum, Brantgum",
+                            "Bredevoort, Brevoort",
+                            "Breezanddijk, Breesândyk",
+                            "Breskens, Bresjes",
+                            "Brielle, Den Briel",
+                            "Britswerd, Britswert",
+                            "Broek, De Broek",
+                            "Broek op Langedijk, Op Langedijk",
+                            "Broekhuizen, Brokeze",
+                            "Broeksterwoude, Broeksterwâld",
+                            "Brouwershaven, Brouwesaeven, Brouw",
+                            "Bruinehaar, Broenehaar",
+                            "Bruinisse, Brunisse, Bru",
+                            "Brummen, Broek",
+                            "Brunssum, Broenssem, Bouwberg",
+                            "Buchten, Buchte, Buchten",
+                            "Budel, Buul",
+                            "Buggenum, Berik, Böggeme",
+                            "Buinen, Bunen",
+                            "Buitenkaag, Leeghwaterbuurt",
+                            "Buitenpost, Bûtenpost",
+                            "Bunschoten-Spakenburg, Bunsjoten",
+                            "Burgerbrug, Burgervlotbrug",
+                            "Burgwerd, Burchwert",
+                            "Burum, Boerum",
+                            "Cadier en Keer, Keer, Kadier en Keer",
+                            "Cadzand, Kezand, Cadzand-Bad",
+                            "Callantsoog, Kallantsoog",
+                            "Castelre, Castelré, Kastelree",
+                            "Castricum, Castricum aan Zee, Kastrikum",
+                            "Chaam, Koam, Kaam",
+                            "Clinge, Klinge",
+                            "Coevorden, Koevern, Koevorden",
+                            "Collendoorn, Koldern, Kolndern",
+                            "Corle, Kolle",
+                            "Cornjum, Koarnjum",
+                            "Cornwerd, Koarnwert",
+                            "Cromvoirt, Kromvoort",
+                            "Cruquius, Cruquius-Oost",
+                            "Cuijk, Kuuk, Kuik",
+                            "Culemborg, Kuilenburg, Kuylenburgh, Culemborch",
+                            "Daarle, Doarle",
+                            "Daarlerveen, Doarseveld",
+                            "Dalen, Daol'n",
+                            "Dalerpeel, Daolerpeel",
+                            "Dalfsen, Dalsen",
+                            "Damwoude, Damwâld",
+                            "De Cocksdorp, De Koksdorp",
+                            "De Glind, De Gliend",
+                            "De Knijpe, De Knipe",
+                            "de Lutte, De Lut",
+                            "De Pol, De Polle",
+                            "De Stolpen, De Stollepe, De Stallepe",
+                            "De Tike, De Tike, Tieke",
+                            "De Valom, De Falom",
+                            "De Veenhoop, De Feanhoop",
+                            "De Weere, De Weare",
+                            "de Wijk, de Wiek",
+                            "De Wilgen, De Wylgen",
+                            "De Wilp, De Wylp",
+                            "Dedemsvaart, De Voart, Dedemsvoart",
+                            "Dedgum, Dedzjum",
+                            "Deersum, Dearsum",
+                            "Deil, Dèhl",
+                            "Delden, Dealdn",
+                            "Delfstrahuizen, Dolsterhuzen , Delfstrehuzen, Dolsterhûzen",
+                            "Delfzijl, Delfziel",
+                            "Den Andel, Naandel",
+                            "Den Ham, 'n Ham",
+                            "Den Hoorn, t Horntje, De Hoore",
+                            "Den Horn, Hörn",
+                            "Den Ilp, Illip",
+                            "Denekamp, Dearnkaamp, Deankaamp",
+                            "Deurne, Deurze",
+                            "Deursen-Dennenburg, Deursen, Dennenburg",
+                            "Deventer, Dèv'nter, Daeventer, Dèmpter",
+                            "Didam, Diem",
+                            "Diemen, Oud-Diemen, Over-Diemen",
+                            "Diepenheim, Deep'n",
+                            "Diepenveen, Diepenvene",
+                            "Diever, Dever",
+                            "Dieverbrug, Dieverbrogge",
+                            "Dijken, Diken",
+                            "Dinxperlo, Dinsper, Dinxper, Dingsperlo",
+                            "Doenrade, Doonder",
+                            "Doesburg, Doezebarg",
+                            "Doetinchem, Deutekem, Durkum, Dörkum",
+                            "Dokkum, Dokkum",
+                            "Doldersum, Dooldersum",
+                            "Dongjum, Doanjum",
+                            "Doniaga, Dunegea",
+                            "Donkerbroek, Donkerbroek, Donkerbroek",
+                            "Doornspijk, Doospiek",
+                            "Dordrecht, Dordt, Eiland van Dordrecht",
+                            "Drachten, Drachten",
+                            "Drachten-Azeven, Drachten-Asân",
+                            "Drachtstercompagnie, Drachtsterkompenije",
+                            "Dreischor, Dreister",
+                            "Drieborg, Drijbörg",
+                            "Driehuis NH, Driehuis",
+                            "Driesum, Driezum",
+                            "Drijber, Drieber",
+                            "Drimmelen, Oud-Drimmelen",
+                            "Drogeham, Droegeham",
+                            "Dronrijp, Dronryp",
+                            "Duiven, Duve, Duven",
+                            "Duizel, Duozel",
+                            "Dwingeloo, Dwingel",
+                            "Echt, Ech",
+                            "Echteld, Eggelt",
+                            "Echtenerbrug, Echtenerbrogge, Ychtenbrêge",
+                            "Eckelrade, Ikkelder",
+                            "Ede, Ee",
+                            "Edens, Iens",
+                            "Ederveen, t Ereveen",
+                            "Ee, Ie",
+                            "Eefde, Aefde",
+                            "Eelde, Eel",
+                            "Eemdijk, Bunsjoten",
+                            "Eemnes, Eemnes-Buiten, Eemnes-Binnen",
+                            "Eenrum, Ainrom",
+                            "Eenum, Ainum, Ainem, Aimen",
+                            "Een-West, Een West",
+                            "Eernewoude, Earnewâld",
+                            "Eersel, Irsel",
+                            "Eerste Exloërmond, 1e Exloërmond",
+                            "Eesergroen, Eesergruun",
+                            "Eesterga, Jistergea",
+                            "Eestrum, Jistrum",
+                            "Eesveen, Iesvene",
+                            "Egmond aan den Hoef, Egmunde an de Hoef, Egmond an de Hoef",
+                            "Eibergen, Eibarge, Holterhoek, Hupsel, Loo, Mallem",
+                            "Eijsden, Eèsjde, Mariadorp, Mesch, Oost-Maarland, Laag-Caestert, Eisden",
+                            "Einighausen, Einikhoêze, Einekoeze",
+                            "Ekehaar, Ieghaor",
+                            "Elahuizen, Ealahuzen",
+                            "Elkenrade, Elkerao",
+                            "Ell, Ellerhei",
+                            "Ellewoutsdijk, Ellesdiek",
+                            "Elsloo, Aelse",
+                            "Elsloo, Else, Elslo",
+                            "Emmen, Em'm",
+                            "Emmer-Compascuum, Emmer-Compas",
+                            "Emst, Ems",
+                            "Engelum, Ingelum",
+                            "Engwierum, Ingwierrum",
+                            "Enschede, Eanske, Enschedee, Enschedé",
+                            "Enspijk, Enspik",
+                            "Enter, Eanter",
+                            "Enumatil, Aimtil, Ijmentil",
+                            "Epe, Eepe",
+                            "Epen, Ieëpe, Eperheide",
+                            "Eppenhuizen, Eppingehoezen, Eppenhoezen, Epmhoezn",
+                            "Erica, Erica",
+                            "Erichem, Eerigèm, Errekom, Eerigem",
+                            "Ermelo, Armelo, Armel",
+                            "Erp, Errûp",
+                            "Escharen, Estere",
+                            "Etten-Leur, Etten",
+                            "Europoort Rotterdam, Europort",
+                            "Exloo, Eksel",
+                            "Exmorra, Eksmoarre",
+                            "Eygelshoven, Egelze, Ejelse",
+                            "Eys, Ees, Eyserhalte, Eyserheide",
+                            "Ezinge, Aisen, Aizing",
+                            "Farmsum, Faarmsom",
+                            "Feerwerd, Fiwwerd",
+                            "Ferwerd, Ferwert",
+                            "Ferwoude, Ferwâlde",
+                            "Finkum, Feinsum",
+                            "Finsterwolde, Finnerwol, Finnerwold",
+                            "Firdgum, Furdgum",
+                            "Fluitenberg, Fluitenbarg",
+                            "Fochteloo, De Fochtel, De Fochtel",
+                            "Follega, Follegea",
+                            "Folsgare, Folsgeare",
+                            "Formerum, Femearum, Formearum",
+                            "Foudgum, Foudgum",
+                            "Foxwolde, Fokswol",
+                            "Franeker, Frjentsjer",
+                            "Frederiksoord, Freriksoord",
+                            "Frieschepalen, Fryske Peallen",
+                            "Froombosch, Froombos, Vroombosch",
+                            "Gaast, Gaast",
+                            "Gaastmeer, De Gaastmar",
+                            "Galder, Kerzel, Kersel",
+                            "Gapinge, Gaepienge, Ter Gaepienge",
+                            "Garderen, Garder",
+                            "Garijp, Garyp",
+                            "Garmerwolde, Gaarmerwold, Gaarmwol",
+                            "Garminge, Garm, Garming",
+                            "Garnwerd, Garwerd",
+                            "Garsthuizen, Gaasthoezen, Garsthoezen",
+                            "Gassel, Gààsel, Nieuw-Gassel",
+                            "Gasselternijveen, Gasselternijeveen",
+                            "Gasteren, Gaastern",
+                            "Gauw, Gau",
+                            "Geerdijk, Geerdiek",
+                            "Gees, Gies",
+                            "Geesbrug, Giesbrugge",
+                            "Geeuwenbrug, Gowenbrugge",
+                            "Geffen, Geffe",
+                            "Geijsteren, Geysteren, Geistere",
+                            "Geldrop, Hoog Geldrop",
+                            "Geleen, Gelaen",
+                            "Gellicum, Gliekum",
+                            "Gemert, Gimmert",
+                            "Gemonde, Gimde",
+                            "Genemuiden, Gællemuun",
+                            "Genum, Ginnum",
+                            "Gerkesklooster, Gerkeskleaster",
+                            "Gersloot, Gersleat",
+                            "Geulle, Gäöl, Geulle aan de Maas",
+                            "Giekerk, Gytsjerk",
+                            "Giessenburg, Giessen-Oudekerk",
+                            "Gieten, Geetn",
+                            "Giethmen, Giethem",
+                            "Giethoorn, Gietern",
+                            "Glane, De Glaan",
+                            "Godlinze, Glìns, Glinz",
+                            "Goedereede, Goeree, Goederede",
+                            "Goënga, Goaiïngea",
+                            "Goëngahuizen, Goaiïngahuzen",
+                            "Goes, Hoes",
+                            "Goingarijp, Goaiïngaryp",
+                            "Goirle, Gòòl, Goorle",
+                            "Gorinchem, Gorcum, Gorkum",
+                            "Gorredijk, De Gordyk",
+                            "Graetheide, Graathei",
+                            "Grafhorst, Graffes, Graffest",
+                            "Gramsbergen, Grambargn, Grambarn, Gramsbarge",
+                            "Grashoek, De Grashook",
+                            "Grathem, Eiland, Heiakker",
+                            "Grave, De Graaf",
+                            "Greonterp, Greonterp",
+                            "Grijpskerk, Gruupskerk, Griepskerk, Gryptsjerk",
+                            "Groede, De Groe",
+                            "Groeningen, Gruuninge",
+                            "Groenlo, Grolle, Grol",
+                            "Groessen, Groesse",
+                            "Grolloo, Grol",
+                            "Groningen, Grunn, Grunnen , Grins",
+                            "Gronsveld, Groéselt",
+                            "Groot Valkenisse, Groôt Valkenisse",
+                            "Groot-Ammers, Groot Ammers",
+                            "Grootebroek, Groôtebroek",
+                            "Grootegast, Grodegast, Gruttegast",
+                            "Grouw, Grou",
+                            "Grubbenvorst, Grubbevors, Grevors",
+                            "Gulpen, Gullepe",
+                            "Guttecoven, Göttekaove",
+                            "Haaften, Hofte",
+                            "Haaksbergen, Hoksebarge",
+                            "Haarle, Hoarle",
+                            "Haastrecht, Beneden-Haastrecht, Boven-Haastrecht",
+                            "Haelen, Hale",
+                            "Haghorst, Haoghorst",
+                            "Haler, Haalder",
+                            "Hallum, Hallum",
+                            "Hantum, Hantum",
+                            "Hantumeruitburen, Hantumer Utbuorren, Hantumerútbuorren",
+                            "Hantumhuizen, Hantumhuzen",
+                            "Hapert, Haopert",
+                            "Haps, Hòps, Haring",
+                            "Harbrinkhoek, Haarbig",
+                            "Hardegarijp, Hurdegaryp",
+                            "Hardenberg, n Arnbarg, Hardenbarg",
+                            "Harderwijk, Harderwiek",
+                            "Hardinxveld-Giessendam, Hààrdingsvelt, Boven-Hardinxveld, Giessendam - Neder-Hardinxveld, Neder-Hardinxveld, Hardinxveld, Hardinksveld",
+                            "Haren, Hoaren",
+                            "Harkema, De Harkema",
+                            "Harkstede, Haakstee, Haarkstee",
+                            "Harlingen, Harns",
+                            "Harrecoven, Harrekaove",
+                            "Harreveld, Harvelle",
+                            "Hartwerd, Hartwert",
+                            "Haskerdijken, Haskerdiken",
+                            "Haskerhorne, Haskerhoarne",
+                            "Hattem, Attem",
+                            "Haule, De Haule, De Haule",
+                            "Haulerwijk, Haulerwiek, Haulerwyk",
+                            "Havelte, Haovelte, Haovelt",
+                            "Havelterberg, Haovelterbarg",
+                            "Hazerswoude-Dorp, Hazerswoude Dorp",
+                            "Hazerswoude-Rijndijk, Hazerswoude Rijndijk",
+                            "Hedel, Hèèl",
+                            "Hedikhuizen, Hékèse",
+                            "Heeg, Heech",
+                            "Heel, Hael, Panheel",
+                            "Heemskerk, Heemskerkerduin",
+                            "Heerenveen, It Hearrenfean, Herenveen",
+                            "Heerle, Èrel",
+                            "Heerlen, Heële",
+                            "Heesch, His",
+                            "Heeze, Héésj",
+                            "Hegelsom, Haegelsum",
+                            "Heibloem, De Heibloom",
+                            "Heide, De Haej",
+                            "Heidenschap, It Heidenskip",
+                            "Heijenrath, Heieret",
+                            "Heiligerlee, Kloosterholt",
+                            "Heinkenszand, Eintjeszand",
+                            "Helden, Helje, Helje-Dörp",
+                            "Hellendoorn, Heldern",
+                            "Hellevoetsluis, Nieuwenhoorn, Nieuw-Helvoet",
+                            "Hellum, Helm",
+                            "Helmond, Hèllemond",
+                            "Helvoirt, Helvoort",
+                            "Hemelum, Himmelum",
+                            "Hempens, Hempus, Himpens",
+                            "Hemrik, De Himrik",
+                            "Hendrik-Ido-Ambacht, t Ambacht",
+                            "Hengelo, Hengel",
+                            "Hengelo (Gld), Hengel",
+                            "Hengevelde, Hèngeveeld",
+                            "Hennaard, Hinnaard",
+                            "Herbaijum, Hjerbeam",
+                            "Herkenbosch, Hirkebosj",
+                            "Herpen, Hèrrepe",
+                            "Herpt, Luttelherpt",
+                            "Herten, Herte",
+                            "Heukelom, Laag-Heukelom",
+                            "Heusden, Asten-Heusden, Heuze",
+                            "Hichtum, Hichtum",
+                            "Hidaard, Hidaard",
+                            "Hieslum, Hieslum",
+                            "Hijlaard, Hilaard",
+                            "Hindeloopen, Hylpen",
+                            "Hitzum, Hitsum",
+                            "Hoedekenskerke, Oetjeskerke",
+                            "Hoek, D'n Noek",
+                            "Hoeven, D'Oeve",
+                            "Hoge Hexel, Hooge-Heksel",
+                            "Hogebeintum, Hegebeintum",
+                            "Hollandscheveld, Hollaandscheveld",
+                            "Holten, Hooltn",
+                            "Holthees, Hôltus",
+                            "Holtum, Houtem",
+                            "Holwerd, Holwert",
+                            "Holwierde, Holwier",
+                            "Hommerts, De Hommerts",
+                            "Honselersdijk, Duh Honsol",
+                            "Hoofdplaat, d'Oôfplaote",
+                            "Hooge Mierde, Hógu Mierd",
+                            "Hooge Zwaluwe, Helkant",
+                            "Hoogerheide, Hogerheide",
+                            "Hoogezand, Hogezaand",
+                            "Hoogvliet Rotterdam, Hoogvliet",
+                            "Hoorn, Hoane, Hoarn",
+                            "Hoornsterzwaag, Hoarnstersweach",
+                            "Horn, Häör",
+                            "Hornhuizen, Hörnhoezen",
+                            "Horst, Haors, Hôrs",
+                            "Houtigehage, De Houtigehage",
+                            "Houwerzijl, Houwerziel",
+                            "Hoven, De Hoven",
+                            "Huins, Húns",
+                            "Huis ter Heide, Hoes ter Heide",
+                            "Huisseling, Huusseling",
+                            "Huissen, Húússun, Huusse, Husen",
+                            "Huizinge, Hoezen",
+                            "Hulsberg, Hölsberg",
+                            "Hulsel, De Hoef",
+                            "Hulst, Ulst",
+                            "Hurwenen, Hurne",
+                            "Idaard, Idaerd",
+                            "Idsegahuizum, Skuzum",
+                            "Idskenhuizen, Jiskenhuzen",
+                            "Idzega, Idzegea",
+                            "IJmuiden, IJmuiden-Noord, IJmuiden-West, IJmuiden-Zuid",
+                            "IJsbrechtum, Ysbrechtum",
+                            "IJsselham, Iesselham",
+                            "IJsselmuiden, Iesselmuun",
+                            "IJzendijke, Iezendieke",
+                            "Ilpendam, Illiperdam",
+                            "Indijk, Yndyk",
+                            "Ingber, De Hut",
+                            "Irnsum, Jirnsum",
+                            "Itens, Itens",
+                            "Jabeek, Jaobik",
+                            "Janum, Jannum",
+                            "Jislum, Jislum",
+                            "Jonkersland, Jonkerslân",
+                            "Jonkersvaart, Jonkersvoart",
+                            "Jorwerd, Jorwert",
+                            "Joure, De Jouwer",
+                            "Jouswier, Jouswier",
+                            "Jubbega, Jobbegea",
+                            "Julianadorp, Noorderhaven, Noôrderhaven",
+                            "Jutrijp, Jutryp",
+                            "Kaag, De Kaag",
+                            "Kaard, Kaad",
+                            "Kaatsheuvel, D'n Ketsheuvel",
+                            "Kalenberg, Kaelebarg",
+                            "Kantens, Kannes",
+                            "Katlijk, Ketlik",
+                            "Katwijk, Katwijk aan Zee",
+                            "Katwijk NB, Katwijk aan de Maas, Katwiek",
+                            "Kedichem, Kekum",
+                            "Keent, Kent",
+                            "Keijenborg, keijdarp",
+                            "Kelpen-Oler, Kelpe-Oler",
+                            "Kerkdriel, Driel",
+                            "Kerkwerve, Moriaanshoofd, Merjaen, Nieuwerkerke",
+                            "Kessel, Kessel-Eik",
+                            "Kiel-Windeweer, Kiel",
+                            "Kimswerd, Kimswert",
+                            "Kinnum, Kinum",
+                            "Klazienaveen, Klazieneveen",
+                            "Klein Zundert, Klein-Zundert",
+                            "Kleverskerke, Klevers",
+                            "Klijndijk, Klijndiek",
+                            "Klimmen, Klumme",
+                            "Klooster Lidlum, Kleaster-Lidlum",
+                            "Kloosterburen, Kloosterboeren",
+                            "Kloosterhaar, Kloosterhoar",
+                            "Kloosterzande, Klôôster",
+                            "Knegsel, Knègsel",
+                            "Kockengen, Kokkengen",
+                            "Kolderwolde, Kolderwâlde",
+                            "Kolham, Kolham, Colham",
+                            "Kolhorn, De Strook",
+                            "Kollum, Kollum",
+                            "Kollumerpomp, De Pomp",
+                            "Kollumerzwaag, Kollumersweach",
+                            "Kommerzijl, Kommerziel",
+                            "Koningsbosch, De Boesj",
+                            "Koolwijk, Kôlluk, Kleine Koolwijk",
+                            "Kootstertille, Koatstertille",
+                            "Kootwijk, Kootwiek, Kodik",
+                            "Kootwijkerbroek, Kootjebroek",
+                            "Kornwerderzand, Koarnwertersân",
+                            "Kortehemmen, Koartehimmen",
+                            "Kortenhoef, Curtevenne",
+                            "Kortgene, Kortjeen",
+                            "Koudekerke, Koukerke",
+                            "Koudum, Koudum",
+                            "Koufurderrige, Koufurderrige",
+                            "Krabbendijke, Krab'ndieke",
+                            "Krewerd, Kraiwerd, Kraaienwierde",
+                            "Krimpen aan de Lek, Schuwacht",
+                            "Krommenie, Krommeniedijk",
+                            "Kronenberg, De Kroeënenberg",
+                            "Kruiningen, Krunege",
+                            "Kruisland, Kröslaant",
+                            "Kubaard, Kûbaard",
+                            "Kuinre, De Kuunder",
+                            "Kwadendamme, Quaedamme",
+                            "Kwintsheul, De Heul",
+                            "Lage Mierde, Léégu Mierd",
+                            "Lageland, Legelaand",
+                            "Lambertschaag, Lambertskaag",
+                            "Landgraaf, Lankgraaf",
+                            "Langbroek, Overlangbroek",
+                            "Langedijke, Langedieke, Langedike",
+                            "Langelille, De Langelille",
+                            "Langelo, Langel",
+                            "Langenboom, Langebom",
+                            "Langeveen, Langeven, t Langnven",
+                            "Langezwaag, Langsweagen",
+                            "Langweer, Langwar",
+                            "Laren, Loarne, Laorne",
+                            "Lathum, Laotem",
+                            "Lauwerzijl, Lauwerziel",
+                            "Ledeacker, Liejèkker",
+                            "Leek, De Laik, Laik, De Lieke, De Like",
+                            "Leende, Lind",
+                            "Leens, Lains, Lydinge, Leidinge",
+                            "Leermens, Leerms",
+                            "Leeuwarden, Liwwadden, Ljouwert",
+                            "Legemeer, Legemar",
+                            "Leimuiderbrug, Leimuiderdijk",
+                            "Lekkerkerk, Opperduit",
+                            "Lellens, Lelns",
+                            "Lemele, Leemle",
+                            "Lemiers, Lemieësj, Lemiesch",
+                            "Lemmer, De Lemmer",
+                            "Lepelstraat, Lepelstraot",
+                            "Lettelbert, Lepterd",
+                            "Leunen, Luuëne",
+                            "Leusden, Leusden-Zuid, Oud-Leusden",
+                            "Leutingewolde, Lukkn'wol",
+                            "Leveroy, Leivere",
+                            "Lichtaard, Lichtaard",
+                            "Lichtenvoorde, Lechtnvoorde",
+                            "Liempde, Liemt, Kleinder-Liempde",
+                            "Lierderholthuis, Lierderholthuus",
+                            "Lieshout, Liessent",
+                            "Liessel, Lijssel",
+                            "Lievelde, Lie-vulde, Leeuweld",
+                            "Lieveren, Lievern",
+                            "Limbricht, Lömmerich",
+                            "Linden, Liende",
+                            "Lioessens, Ljussens",
+                            "Lions, Leons",
+                            "Lippenhuizen, Lippenhuzen",
+                            "Loenen, Loen'n",
+                            "Loënga, Loaiïngea",
+                            "Loerbeek, Loerbea:k, Loerbeak",
+                            "Lollum, Lollum",
+                            "Lomm, Lômm",
+                            "Longerhouw, Longerhou",
+                            "Loosbroek, Lôsbroek",
+                            "Loosdrecht, Nieuw-Loosdrecht, Nieuw Loosdrecht, Oud-Loosdrecht, Oud Loosdrecht",
+                            "Loppersum, Loppersom",
+                            "Losdorp, Lösdörp",
+                            "Losser, Losker",
+                            "Lucaswolde, Luukswold , Luukswolle",
+                            "Luinjeberd, Lúnbert",
+                            "Lutkewierum, Lytsewierrum",
+                            "Lutten, Lutn",
+                            "Luttenberg, Luttenbarg",
+                            "Luxwoude, Lúkswâld",
+                            "Maarheeze, Máres",
+                            "Maarssen, Maarssenbroek, Maarsseveen",
+                            "Maasbree, Bree",
+                            "Maasdijk, Duh Daik",
+                            "Maashees, Muszès",
+                            "Maastricht, Mestreech, Maestricht",
+                            "Maastricht-Airport, Technoport Europe",
+                            "Maasvlakte Rotterdam, Maasvlakte, Eerste Maasvlakte",
+                            "Macharen, Machere",
+                            "Made, de May",
+                            "Makkinga, Makkinge, Makkingea",
+                            "Makkum, Makkum",
+                            "Mander, Maander",
+                            "Manderveen, Maanderven",
+                            "Mantinge, Maanting",
+                            "Maren-Kessel, Maren Kessel",
+                            "Margraten, Mergraote, Groot Welsden, Honthem, Klein Welsden, t Rooth",
+                            "Maria Hoop, Mariahoop, Maria-Hoop",
+                            "Mariënberg, Marienberg, Mainbarg",
+                            "Mariënheem, Marienheem",
+                            "Marijenkampen, Mari'jenkaampen",
+                            "Markelo, Maarkel",
+                            "Marken, Mereke",
+                            "Marrum, Marrum",
+                            "Marssum, Marsum",
+                            "Marum, Moarum, Mearum",
+                            "Matsloot, De Matsloot",
+                            "Mechelen, Mechele",
+                            "Meeden, de Maiden",
+                            "Meedhuizen, Mijhoezen, Midhoezen",
+                            "Meijel, Mééls",
+                            "Melderslo, De Melderse",
+                            "Meliskerke, Melis",
+                            "Menaldum, Menaam",
+                            "Mensingeweer, Menskeweer",
+                            "Meppel, Möppelt",
+                            "Merkelbeek, Merkelbek",
+                            "Merselo, Maersele",
+                            "Meteren, Métere",
+                            "Meterik, De Miëterik",
+                            "Metslawier, Mitselwier",
+                            "Mheer, Maer, Meer",
+                            "Middelaar, Middelar",
+                            "Middelharnis, Menheerse",
+                            "Middelstum, Milnsum",
+                            "Middenbeemster, Halfweg",
+                            "Midlum, Mullum",
+                            "Midsland, Meslôns, Midslân",
+                            "Midwolda, Midwolle",
+                            "Midwolde, Midwolle",
+                            "Mildam, Mildaam",
+                            "Milheeze, Millus",
+                            "Milsbeek, De Milsbèk",
+                            "Minnertsga, Minnertsgea, Minnertska",
+                            "Mirns, Murns",
+                            "Moddergat, Moddergat",
+                            "Molenend, Mûnein",
+                            "Molenhoek, De Meulenhoek",
+                            "Molkwerum, Molkwar",
+                            "Monnickendam, Monnikendam",
+                            "Montfort, Mofert",
+                            "Moordrecht, moor-drecht",
+                            "Moorveld, Mwórveld",
+                            "Morra, Moarre",
+                            "Muiderberg, Hakkelaarsbrug",
+                            "Munnekeburen, Munnikeburen, Munnikebuorren",
+                            "Munnekezijl, Muntsjesyl, Muntjeziel",
+                            "Munstergeleen, Munstergelaen, Abshoven",
+                            "Mussel, De Muzzel",
+                            "Musselkanaal, Muzzelknoal",
+                            "Naaldwijk, Naluk, Nalek",
+                            "Naarden, Naarderbos",
+                            "Nederhorst den Berg, Nederhorst ",
+                            "Nederland, Nederlaand",
+                            "Nederweert, Ni-jwieërt",
+                            "Neer, Naer",
+                            "Neeritter, Itter",
+                            "Neerkant, de Nirkant",
+                            "Neerlangel, Nerlangel",
+                            "Neerloon, Nerloewen",
+                            "Nes, Nes",
+                            "Netersel, Nittersel",
+                            "Niawier, Nijewier",
+                            "Nibbixwoud, Nibbikswoud",
+                            "Niebert, Nijbert",
+                            "Niehove, Nijhoof",
+                            "Niekerk, Nijkerk",
+                            "Niekerk, Nijkèrk",
+                            "Nietap, De Nijtap, De Neitap",
+                            "Nieuw Beerta, Nij Beerte",
+                            "Nieuw- en Sint Joosland, t Nieuwland, Nieuw en Sint Joosland",
+                            "Nieuw Scheemda, Nij Scheemte",
+                            "Nieuw-Amsterdam, Neij-Amsterdam",
+                            "Nieuw-Balinge, Nei-Baoling",
+                            "Nieuw-Buinen, Neij-Buun",
+                            "Nieuw-Dordrecht, Nei-Dord",
+                            "Nieuwe Krim, Neie Krim",
+                            "Nieuwe Niedorp, Naaie Nierup",
+                            "Nieuwe Pekela, Nij Pekel",
+                            "Nieuwebrug, Nijbrêge",
+                            "Nieuwehorne, Nijhoarne",
+                            "Nieuwerbrug aan den Rijn, Nieuwerbrug",
+                            "Nieuwerkerk, Nieuwerkaarke",
+                            "Nieuweroord, Neieroord",
+                            "Nieuweschoot, Nijskoat",
+                            "Nieuwkoop, Langeraar",
+                            "Nieuwlande, Neilaande, Nieuwlande Coevorden",
+                            "Nieuwlande, Neilaande",
+                            "Nieuw-Lekkerland, Nieuw Lekkerland",
+                            "Nieuwleusen, Ni'jlusen, Ni'jluusn",
+                            "Nieuwolda, Nijwol, Nijwolle",
+                            "Nieuw-Roden, Nei-Roon, Nij-Roon",
+                            "Nieuw-Schoonebeek, Neij-Skoonebeek",
+                            "Nieuwstadt, De Nuujsjtadt, Nieuwstad",
+                            "Nieuwveen, Noordeinde",
+                            "Nieuw-Weerdinge, Nei-Weerdinge",
+                            "Niezijl, Nijziel",
+                            "Nij Altoenae, Nij Altena",
+                            "Nij Beets, Nij Beets",
+                            "Nijbroek, Niebroek",
+                            "Nijeberkoop, Ni'jberkoop, Nijeberkeap",
+                            "Nijega, Nyegea",
+                            "Nijeholtpade, Ni'jhooltpae, Nijeholtpea",
+                            "Nijeholtwolde, Ni'jhooltwoolde, Nijeholtwâlde",
+                            "Nijelamer, Ni'jlaemer, Nijelemmer",
+                            "Nijemirdum, Nijemardum",
+                            "Nijensleek, Neiensleek",
+                            "Nijetrijne, Ni'jtriene, Nijetrine",
+                            "Nijhuizum, Nijhuzum",
+                            "Nijkerk, Niekark",
+                            "Nijkerkerveen, Niekarkerveen",
+                            "Nijland, Nijlân",
+                            "Nijmegen, Nimwèège, Nimwegen",
+                            "Nispen, Nipse",
+                            "Nistelrode, Nisseroi",
+                            "Noorbeek, Norbik, Norrebik",
+                            "Noordbergum, Noardburgum",
+                            "Noordbroek, Noordbrouk",
+                            "Noorden, Noordse Buurt",
+                            "Noordhorn, Noordhörn",
+                            "Noordlaren, Noordloarn",
+                            "Noord-Sleen, Noordsleen, Noord-Slien",
+                            "Noordwijk, Noordwiek",
+                            "Noordwolde, Noordwoolde, Noardwâlde",
+                            "Noordwolde, Noordwòl",
+                            "Norg, Nörg",
+                            "Notter, Nutter, Nötter",
+                            "Nuis, Nuus",
+                            "Nunhem, Nunem",
+                            "Nuth, Nut, Vaesrade",
+                            "Obbicht, Obbeeg",
+                            "Odijk, Ojik",
+                            "Odiliapeel, De Piejel",
+                            "Odoorn, Oring",
+                            "Oene, Une",
+                            "Oenkerk, Oentsjerk",
+                            "Offingawier, Offenwier",
+                            "Ohé en Laak, Genoea en Laak",
+                            "Oijen, Ojje, Benedeneind, Boveneind",
+                            "Oirlo, Oerlo, Oeldere",
+                            "Oirsbeek, Oorsbeek, Oësjbik, Oesjbik",
+                            "Oirschot, Orskot, Oorschot",
+                            "Oisterwijk, Oosterwijk, Oisterwijkse Hoeven",
+                            "Oldeberkoop, Berkoop, Aldeberkeap",
+                            "Oldeboorn, Aldeboarn",
+                            "Oldeholtpade, Hooltpae, Aldeholtpea",
+                            "Oldeholtwolde, Hooltwoolde, Aldeholtwâlde",
+                            "Oldehove, Olhoof",
+                            "Oldekerk, Ollekèrk",
+                            "Oldelamer, Ooldelaemer, Aldlemmer",
+                            "Oldemarkt, Oldemaark",
+                            "Oldenzaal, Oldnzel",
+                            "Oldenzijl, Oldenziel",
+                            "Oldeouwer, Alde Ouwer, Aldeouwer",
+                            "Oldetrijne, Ooldetriene, Aldetrine",
+                            "Olterterp, Olterterp",
+                            "Ommen, Ommn",
+                            "Onderdendam, Onderndaam",
+                            "Ooltgensplaat, De Plaet",
+                            "Oostburg, Wòstburg",
+                            "Oosteind, Vijfhuizen",
+                            "Oosterbierum, Easterbierrum",
+                            "Oosterend, Aastrein, Aasterein",
+                            "Oosterend, Easterein",
+                            "Oosterhesselen, Hesseln",
+                            "Oosterland, Oôsterland",
+                            "Oosterlittens, Easterlittens",
+                            "Oostermeer, Eastermar",
+                            "Oosternieland, Nijlaand",
+                            "Oosternijkerk, Easternijtsjerk, Nijtsjerk",
+                            "Oosterstreek, De Oosterstreek, Easterstreek",
+                            "Oosterwierum, Easterwierrum",
+                            "Oosterwijtwerd, Oosterwiewerd",
+                            "Oosterwolde, Oosterwoolde",
+                            "Oosterzee, Eastersee, Oosterzee",
+                            "Oost-Graftdijk, Oost Graftdijk",
+                            "Oosthem, Easthim",
+                            "Oostkapelle, Oôskappel",
+                            "Oostknollendam, Oost-Knollendam",
+                            "Oostrum, Aostrem, Aostrum",
+                            "Oostrum, Eastrum",
+                            "Oost-Souburg, Oôst-Soeburg, Oost-Soeburg",
+                            "Oostwoud, Oôstwoud",
+                            "Ootmarsum, Oatmöske",
+                            "Opeinde, De Pein",
+                            "Opende, De Penne, De Grinzer Pein, De Grinzer Peen, De Peen",
+                            "Oppenhuizen, Toppenhuzen",
+                            "Oranjewoud, Oranjewâld",
+                            "Ospel, D'Oospel, Ospeldijk, Ospeldiêk",
+                            "Oss, Os",
+                            "Ossenzijl, Ossenziel",
+                            "Oud Ootmarsum, Oald Oatmöske",
+                            "Oud-Alblas, Oud Alblas",
+                            "Oud-Beijerland, Oud Beijerland",
+                            "Oude Leije, Aldeleie, Alde Leie",
+                            "Oude Niedorp, Ouwe Nierup, Ouwe Nierep",
+                            "Oude Pekela, Olle Pekel, Ol Pekel",
+                            "Oude Willem, Alde Willem",
+                            "Oudebildtzijl, Aldebiltsyl, Ouwe-Syl",
+                            "Oudega, Aldegea",
+                            "Oudehaske, Aldehaske",
+                            "Oudehorne, Aldhoarne",
+                            "Oudemirdum, Aldemardum",
+                            "Oudenbosch, Ouwebos, Oudebos",
+                            "Ouderkerk aan de Amstel, Ouderkerk",
+                            "Oudeschans, Olscha(a)nze",
+                            "Oudeschild, Skil",
+                            "Oudeschip, t Olschip, Oude Schip",
+                            "Oudeschoot, Aldskoat",
+                            "Oudkerk, Aldtsjerk",
+                            "Oudleusen, Oldlusen, Oldluzen",
+                            "Oud-Sabbinge, Oud Sabbinge",
+                            "Oudwoude, Aldwâld",
+                            "Ouwerkerk, Ouwerkaarke",
+                            "Ouwsterhaule, Ousterhaule",
+                            "Ouwster-Nijega, Ousternijegea",
+                            "Overdinkel, Oaverdeenkel",
+                            "Overlangel, Langel",
+                            "Overloon, Loën",
+                            "Overschild, 't Schild",
+                            "Overslag, D'n Overslag",
+                            "Oyen, Oijen",
+                            "Paesens, Peazens",
+                            "Pannerden, Panderen",
+                            "Panningen, Kepèl",
+                            "Papekop, Diemerbroek",
+                            "Papenhoven, Papenhaove",
+                            "Parrega, Parregea",
+                            "Paterswolde, Paoterwool, Pôtjerwôl, Potjerwolde, Potterwol",
+                            "Peest, Peeist",
+                            "Peize, Paeiz, Peis, Paais",
+                            "Peperga, Peperge, Pepergea",
+                            "Pernis Rotterdam, Pernis",
+                            "Pesse, Pes",
+                            "Piaam, Piaam",
+                            "Pieterburen, Paiderboeren",
+                            "Pietersbierum, Pitersbierrum",
+                            "Pieterzijl, Pieterziel",
+                            "Pijnacker, Pijnakker",
+                            "Pingjum, Penjum",
+                            "Pitteperk, Pittepêrk",
+                            "Plasmolen, De Plasmeule",
+                            "Poeldijk, Duh Poeluk",
+                            "Polsbroek, Polsbroekerdam",
+                            "Poppingawier, Poppenwier",
+                            "Posterholt, Postert",
+                            "Purmerend, Purmerbuurt, Purmer",
+                            "Puth, Pöt",
+                            "Raalte, Raolte",
+                            "Raamsdonk, Raamsdonk-Dorp, Rammesdoenk",
+                            "Raard, Raard",
+                            "Radewijk, Roke",
+                            "Radio Kootwijk, Radio Kootwiek",
+                            "Ransdaal, Ranzel",
+                            "Rasquert, Raskert, Raskerd",
+                            "Rauwerd, Raerd",
+                            "Ravenstein, Ravvestèìjn",
+                            "Ravenswoud, Raevenswoold, Ravenswâld",
+                            "Reek, De Reek",
+                            "Reeuwijk, Reeuwijk-Brug, Reeuwijk-Dorp, Oud-Reeuwijk",
+                            "Reijmerstok, Rimmesjtòk",
+                            "Reitsum, Reitsum",
+                            "Renesse, Renisse",
+                            "Renswoude, Emminkhuizen",
+                            "Reusel, Reuzol",
+                            "Reuver, De Ruiver, Oppe Ruiver",
+                            "Rhoon, Roon",
+                            "Ried, Rie",
+                            "Rien, Rien",
+                            "Rietmolen, Reetmölle",
+                            "Rijen, Verhoven, Vossenberg, Weilerseind",
+                            "Rijkevoort, Riekevort",
+                            "Rijperkerk, Ryptsjerk",
+                            "Rijs, Riis",
+                            "Rijssen, Riesn",
+                            "Rijswijk (NB), Reszik, Rijsik",
+                            "Rinsumageest, Rinsumageast",
+                            "Ritthem, Rittem",
+                            "Roden, Roon",
+                            "Roderesch, Roneresch, Rooneresch",
+                            "Roderwolde, Rowol",
+                            "Roermond, Remunj, Ruremonde",
+                            "Rohel, Reahel",
+                            "Roodeschool, Roodschoul",
+                            "Roodhuis, Reahûs",
+                            "Roodkerk, Readtsjerk",
+                            "Roordahuizum, Reduzum, Roadahuzum",
+                            "Roosteren, Roostere, Oud-Roosteren",
+                            "Rotterdam-Albrandswaard, Rotterdam Albrandswaard",
+                            "Rottevalle, De Rottefalle",
+                            "Rottum, Röttem, Röppen",
+                            "Rouveen, Roevène",
+                            "Ruigahuizen, Rûgehuzen",
+                            "Ruinerwold, Ruunerwold",
+                            "Ruurlo, Reurle",
+                            "'s Gravenmoer, s-Gravenmoerse Vaart",
+                            "Saaksum, Soaksum",
+                            "Saasveld, Soasel",
+                            "Saaxumhuizen, Soaksumhoezen",
+                            "Sambeek, Zammek, Sammûk, Zambaek",
+                            "Sandfirden, Sânfurd",
+                            "Santpoort-Noord, Santpoort",
+                            "Santpoort-Zuid, Santpoort",
+                            "Sappemeer, Sapmeer",
+                            "Sassenheim, Sassem",
+                            "Sauwerd, Saauwerd",
+                            "Schagerbrug, Skagerbrég",
+                            "Schaijk, Schojk",
+                            "Schalkwijk, Honswijk",
+                            "Schalsum, Skalsum",
+                            "Scharendijke, Schaerendieke",
+                            "Scharmer, Schaarmer",
+                            "Scharnegoutum, Skearnegoutum",
+                            "Scharsterbrug, Skarsterbrêge",
+                            "Scheemda, Scheemde",
+                            "Scheemderhamrik, Scheemterhammerk",
+                            "Schellinkhout, Skellinkhout",
+                            "Schelm, Schans",
+                            "Scherpenzeel, Sjaarpezeil, Sjaarpezeel, Schaarpezeel, Scharpenzeel, Scharpnzeel",
+                            "Scherpenzeel, Scharpenzeel, Skerpenseel",
+                            "Schettens, Skettens",
+                            "Scheulder, Sjuuëlder",
+                            "Schijf, ut Schèf",
+                            "Schijndel, Skèndel",
+                            "Schildwolde, Schewôl",
+                            "Schimmert, Sjömmert",
+                            "Schingen, Skingen",
+                            "Schinnen, Sjènne",
+                            "Schinveld, Sjilvend",
+                            "Schiphol, Luchthaven Schiphol, Koninklijke Luchthaven Schiphol , Amsterdam Airport Schiphol, Schiphol-Oost",
+                            "Schipperskerk, Sjipperskirk",
+                            "Schoonebeek, Oud-Schoonebeek, Skoonebeek, Aold-Skoonebeek",
+                            "Schoonloo, Scheloo",
+                            "Schoorl, Aagtdorp, Bregtdorp, Catrijp",
+                            "Schouwerzijl, Schouwerziel",
+                            "Schraard, Skraard",
+                            "Schuinesloot, Schunesloot, Skunesloot",
+                            "Sebaldeburen, Seballeburen",
+                            "Sellingen, Zèlng",
+                            "Serooskerke, Stroôskerke",
+                            "Serooskerke, Seêskerke",
+                            "Sevenum, Zaerum",
+                            "Sexbierum, Seisbierrum",
+                            "'s-Graveland, Graveland",
+                            "'s-Gravendeel, Gravendeel",
+                            "'s-Gravenhage, Den Haag",
+                            "'s-Heer Abtskerke, Schrabbekerke",
+                            "'s-Heerenberg, s-Heerenbarg",
+                            "'s-Hertogenbosch, Den Bosch, s-Bosch, s-Hertogenbos, Den Bos",
+                            "Sibculo, Sibkullo",
+                            "Siddeburen, Sibboern",
+                            "Siebengewald, Siêbegewâld",
+                            "Siegerswoude, Sigerswâld",
+                            "Sijbrandaburen, Sibrandabuorren",
+                            "Sijbrandahuis, Sibrandahûs",
+                            "Silvolde, Sillevolde, Zillewold",
+                            "Simpelveld, Zumpelveld",
+                            "Sint Agatha, Sint Aagte",
+                            "Sint Annaparochie, Sint Anne, Sint-Anne, St.-Annaparochie",
+                            "Sint Annen, Sunt Anne, Lutje Auwerd",
+                            "Sint Anthonis, Sint Tunnis",
+                            "Sint Jacobiparochie, Sint Jabik, Sint-Jabik, St.-Jacobiparochie",
+                            "Sint Janskerke, s-Janskerke",
+                            "Sint Jansklooster, ′t Klooster",
+                            "Sint Jansteen, Stiejn",
+                            "Sint Joost, Sint-Joas",
+                            "Sint Maartensvlotbrug, Sint Maartenszee",
+                            "Sint Nicolaasga, Sint Nyk",
+                            "Sint Pancras, St. Pancras, Sint-Pancras",
+                            "Sint Philipsland, Flupland",
+                            "Sint-Annaland, Stalland, Setalland",
+                            "Sintjohannesga, Sint-Jânsgea",
+                            "Sint-Maartensdijk, Smerdiek",
+                            "Sirjansland, Sturjalland",
+                            "Sittard, Zitterd",
+                            "Sleen, Slien",
+                            "Slenaken, Sjlennich",
+                            "Slijkenburg, Sliekenborg, Slikenboarch",
+                            "Slochteren, Slochter",
+                            "Sloten, Sleat",
+                            "Sluis, Sluus, Sluissche Veer",
+                            "Smakt, De Smákt",
+                            "Smalle Ee, Smelle Ie",
+                            "Smallebrugge, Smelbrêge",
+                            "Snakkerburen, Snakkerbuorren",
+                            "Sneek, Snits",
+                            "Snikzwaag, Sniksweach",
+                            "Soest, Soestduinen",
+                            "Someren, Zummere, Someren-Eind, Someren-Heide",
+                            "Son en Breugel, Breugel",
+                            "Sonnega, Sunnege, Sonnegea",
+                            "Spaarndam, Spaarndam-Oost, Spaarnwoude",
+                            "Spaarndam gem. Haarlem, Oud Spaarndam, Spaarndam-West",
+                            "Spanbroek, Wadway",
+                            "Spanga, Spange, Spangea",
+                            "Spaubeek, Sjpaubik, Sjpawbik",
+                            "Spijk, Spiek",
+                            "Spui, Zoutespui",
+                            "Stad aan 't Haringvliet, Stad aan t Haringvliet",
+                            "Stadskanaal, Knoal",
+                            "Staphorst, Stappest, Stappers",
+                            "Startenhuizen, Staartenhoezen",
+                            "Stavoren, Starum",
+                            "Stedum, Steem",
+                            "Steenbergen, Stienbargen, Steinbargen, Steinbaargen",
+                            "Steendam, Staindam",
+                            "Steensel, Stinsel",
+                            "Steenwijk, Steenwiek, Stienwiek",
+                            "Steenwijkerwold, Steenwiekerwold",
+                            "Stegeren, Steeger",
+                            "Steggerda, Steggerde, Steggerda",
+                            "Steyl, Sjteil, Steijl, Oud-Steyl, Nieuw-Steyl",
+                            "Stieltjeskanaal, Stieltieskanaol, Stieltiesknaol",
+                            "Stitswerd, Stivverd",
+                            "Stokkum, Stökkum",
+                            "Striep, Stryp",
+                            "Strijen, Strien",
+                            "Stroobos, Strobos",
+                            "Stuifzand, Stoefzaand",
+                            "Suameer, Sumar",
+                            "Suawoude, Suwâld",
+                            "Surhuisterveen, Surhústerfean",
+                            "Surhuizum, Surhuzum",
+                            "Susteren, Zöstere, Dieteren, Baakhoven, Echterbosch, Mariaveld",
+                            "Swalmen, Zjwame",
+                            "Sweikhuizen, Zjweikese, Sjweikese",
+                            "Swolgen, Zwollege",
+                            "t Hörn-Wij, Wij",
+                            "'t Waar, t Woar",
+                            "'t Zandt, 't Zaandt",
+                            "Taarloo, Taarlo, Taorl",
+                            "Teeffelen, Teffele",
+                            "Teerns, Tirns, Tearns",
+                            "Tegelen, Tegele",
+                            "Ter Apel, Troapel",
+                            "Ter Apelkanaal, Troapelknoal",
+                            "Ter Heijde, Ter Heijde aan Zee",
+                            "Ter Idzard, Der Izzerd, Teridzert",
+                            "Terband, Terbant",
+                            "Terhole, Ter Hole",
+                            "Terhorne, Terherne",
+                            "Ternaard, Ternaard",
+                            "Terneuzen, Terneuzen, Neuzen",
+                            "Terwispel, Terwispel",
+                            "Terzool, Tersoal",
+                            "Thesinge, Taisen",
+                            "Thorn, Thoear",
+                            "Tienhoven aan de Lek, Tienhoven",
+                            "Tienray, Tiendere",
+                            "Tietjerk, Tytsjerk",
+                            "Tijnje, De Tynje",
+                            "Tinallinge, Tinaalng",
+                            "Tirns, Turns",
+                            "Tjalhuizum, Tsjalhuzum",
+                            "Tjalleberd, Tsjalbert",
+                            "Tjerkgaast, Tsjerkgaast",
+                            "Tjerkwerd, Tsjerkwert",
+                            "Tjuchem, Tjuggem, Tjöggem",
+                            "Toldijk,  'Toldiek, Toeldiek",
+                            "Toornwerd, Doord",
+                            "Tricht, Trig",
+                            "Triemen, De Trieme, De Triemen",
+                            "Tripscompagnie, Tripskomnij",
+                            "Tubbergen, Tubbe, Tubbege, Tubbig, Tubbarng'n",
+                            "Tweede Exloërmond, 2e Exloërmond, Tweide Ekselermond, Tweede Mond, Twaide Mond",
+                            "Tweede Valthermond, 2e Valthermond",
+                            "Twello, Twelle",
+                            "Twijzel, Twizel",
+                            "Twijzelerheide, Twizelerheide",
+                            "Tynaarlo, Tynaorl",
+                            "Tzum, Tsjom",
+                            "Tzummarum, Tsjummearum",
+                            "Uden, Uje",
+                            "Uithuizen, Oethoezen",
+                            "Uithuizermeeden, Meij, Mij",
+                            "Uitwellingerga, Twellingea",
+                            "Uitwijk, Uittik",
+                            "Ulestraten, Ulesjtraote",
+                            "Ulrum, Ollerom",
+                            "Ureterp, Oerterp",
+                            "Urmond, Uermend",
+                            "Ursem, Rustenburg",
+                            "Usquert, Oskerd",
+                            "Utrecht, Utreg, Utereg",
+                            "Vaals, Vols",
+                            "Vaassen, Voassen",
+                            "Valkenswaard, Valkeswird",
+                            "Valthe, Vaalt",
+                            "Veendam, Ommelanderwijk, Numero Dertien, Nummer Dattien, Zuidwending , Zuudwenden",
+                            "Veenendaal, Venendaal",
+                            "Veenklooster, Feankleaster",
+                            "Veenwouden, Feanwâlden",
+                            "Veere, Ter Veere, Vere",
+                            "Vegelinsoord, Vegelinsoard",
+                            "Veghel, Vèghel",
+                            "Velden, Velde",
+                            "Velsen-Noord, Velsen Noord, Velzen-Noord, Velzen noord",
+                            "Velsen-Zuid, Velsen Zuid, Velzen-Zuid, Velzen zuid",
+                            "Venhuizen, De Buurt",
+                            "Venray, Venroj, Venraai",
+                            "Ven-Zelderheide, Dam",
+                            "Vessem, Vèssum",
+                            "Veulen, ´t Väöle",
+                            "Vianen, Hoef en Haag",
+                            "Vierhuizen, Vaaierhoezen",
+                            "Vijlen, Viele, Ville",
+                            "Vilsteren, Vilster",
+                            "Vinkega, Vinkege, Finkegea",
+                            "Vinkel, Munnekens-Vinkel",
+                            "Vinkenbuurt, Vinknbuurte",
+                            "Vledderveen, De Vledder, Fledderveen ",
+                            "Vledderveen, Vleddervene",
+                            "Vlierden, Vlierde",
+                            "Vlissingen, Vlissienge",
+                            "Voerendaal, Voelender",
+                            "Vollenhove, Veno",
+                            "Vondelingenplaat Rotterdam, Vondelingenplaat",
+                            "Voorthuizen, Voorthuzen",
+                            "Vorden, Vodden",
+                            "Vortum-Mullem, Vortum",
+                            "Vragender, Vroagender",
+                            "Vredepeel, De Vredepieël",
+                            "Vries, Vreeis",
+                            "Vriescheloo, Vraiskeloo",
+                            "Vriezenveen, t Vjenne, Venne, Vreeznven, Vreeinvenne",
+                            "Vroomshoop, Vromshop",
+                            "Vrouwenparochie, Froubuorren, Froubuurt",
+                            "Vrouwenpolder, D'n Polder",
+                            "Waalre, Woldere",
+                            "Waalwijk, Wólluk",
+                            "Waarland, t Waarland",
+                            "Waaxens, Waaksens",
+                            "Waddinxveen, Waddinksveen",
+                            "Wagenberg, Waogenbérg",
+                            "Wagenborgen, Woagenbörgen",
+                            "Wanneperveen, Wannepervene",
+                            "Wanroij, Wangroj",
+                            "Wanssum, Wânsem",
+                            "Wanswerd, Wânswert",
+                            "Wapenveld, Waop'mvelde",
+                            "Wapserveen, Wapserveene",
+                            "Warffum, Waarvum",
+                            "Warfhuizen, Waarfhoezen",
+                            "Warfstermolen, Warfstermûne, Warfstermeul",
+                            "Warga, Wergea",
+                            "Warns, Warns",
+                            "Warnsveld, Wansveld, Warken, Warkn",
+                            "Wartena, Warten",
+                            "Waskemeer, Waskemeer, Waskemar",
+                            "Waspik, Waspek, Waespijck, Waspik-Zuid, Waspik-Boven",
+                            "Waterhuizen, Woaterhoezen",
+                            "Waverveen, Nessersluis",
+                            "Weert, Wieërt",
+                            "Wehe-den Hoorn, Den Hoorn",
+                            "Wehl, Nieuw-Wehl, Wael",
+                            "Wekerom, Wekerum",
+                            "Welsrijp, Wjelsryp",
+                            "Wemeldinge, Weumelienge",
+                            "Wernhout, Wérnout",
+                            "Wessem, Wissem, Wèssem",
+                            "Westbeemster, De Blikken Schel",
+                            "Westdorpe, Reedijk",
+                            "Westendorp, Westendarp",
+                            "Westerbeek, Den Twist",
+                            "Westerbroek, Westerbrouk",
+                            "Westeremden, Westeremm",
+                            "Westergeest, Westergeast",
+                            "Westerhoven, Wésteroowve",
+                            "Westerlee, Westerlij",
+                            "Westernieland, Westernijland ",
+                            "Westervelde, Westervèle",
+                            "Westerwijtwerd, Wietwerd",
+                            "West-Graftdijk, West Graftdijk",
+                            "Westhem, Westhim",
+                            "Westhoek, De Westhoek  ",
+                            "Westkapelle, Wasschappel",
+                            "Westknollendam, West-Knollendam",
+                            "West-Souburg, Wêst-Soeburg",
+                            "Wetsens, Wetzens",
+                            "Wetsinge, Wetsen",
+                            "Wezup, Wisp",
+                            "Wieringerwaard, Nieuwesluis, Westerklief, Wieringerwaerdt",
+                            "Wierum, Wierum",
+                            "Wieuwerd, Wiuwert",
+                            "Wijbosch, Wèppus",
+                            "Wijchen, Wiechen",
+                            "Wijckel, Wikel",
+                            "Wijhe, Wieje",
+                            "Wijk bij Duurstede, Den Oord",
+                            "Wijk en Aalburg, Wijk en Aolburg",
+                            "Wijlre, Wielree",
+                            "Wijnaldum, Winaem",
+                            "Wijnandsrade, Wienesroa",
+                            "Wijnbergen, Wienbarge",
+                            "Wijngaarden, Wingerde",
+                            "Wijnjewoude, Wynjewâld",
+                            "Wijns, Wyns",
+                            "Wijster, Wiester",
+                            "Wijtgaard, Wytgaard, Wytgaard",
+                            "Wildervank, Westerdiepsterdallen, Wildervanksterdallen",
+                            "Wilhelminadorp, Wulleminadurp",
+                            "Wilp, Wilp-Achterhoek",
+                            "Windraak, Wintraak, De Wèndjraak",
+                            "Winneweer, Winneweer, Windeweer",
+                            "Winschoten, Winschoot",
+                            "Winsum, Wìnzum",
+                            "Winterswijk, Wenters, Wenterswiek",
+                            "Wirdum, Wurdum",
+                            "Wirdum (Gn), Wirrem",
+                            "Witdonk, De Witdónk",
+                            "Witharen, Withoarn, Withöare",
+                            "Witmarsum, Wytmarsum",
+                            "Woensdrecht, Woeñzdrécht",
+                            "Woldendorp, Wold'ndörp",
+                            "Wolfheze, Hoog-Wolfheze",
+                            "Wolphaartsdijk, Wolfersdiek",
+                            "Wolsum, Wolsum",
+                            "Woltersum, Woltersom",
+                            "Wolvega, Wolvege, Wolvegea",
+                            "Wommels, Wommels",
+                            "Wons, Wûns",
+                            "Workum, Warkum",
+                            "Woudenberg, Wombaarg",
+                            "Woudrichem, Woerkem, Woerkum",
+                            "Woudsend, Wâldsein",
+                            "Wouterswoude, Wâlterswâld",
+                            "Wouw, Wów",
+                            "Yerseke, Yese, Ierseke",
+                            "Ypecolsga, Ypekolsgea",
+                            "Zaltbommel, Bommel",
+                            "Zandberg, Saandbarg",
+                            "Zandeweer, Zanneweer",
+                            "Zandhuizen, Zaandhuzen, Sânhuzen",
+                            "Zandpol, Zaandpolle",
+                            "Zandvoort, Zandvoord",
+                            "Zeerijp, Riep, Zeeriep",
+                            "Zevenaar, Zêvender, Zênder",
+                            "Zevenbergen, Zeuvebérge, Achterdijk",
+                            "Zevenbergschen Hoek, Den Oek, Drie Hoefijzers, Strooiendorp",
+                            "Zevenbergschen Hoek, Den Oek",
+                            "Zevenhuizen, Zeuvenhuzen, Zeuv'nhoezen, Seubnhuuzen",
+                            "Zierikzee, Zurrikzeê",
+                            "Zieuwent, ’t Zöwwent, Zöwwent",
+                            "Zijdewind, Sidewind, t Zoidewind",
+                            "Zijldijk, Zieldiek",
+                            "Zoeterwoude, Zoeterwoude-Rijndijk, Zoeterwoude-Dorp",
+                            "Zonnemaire, Sunnemere",
+                            "Zoutelande, Zóetelande",
+                            "Zoutkamp, Zoltkamp, Soltkamp, Sâltkamp",
+                            "Zuidbroek, Zuudbrouk",
+                            "Zuiddorpe, Zuuddurpe",
+                            "Zuidhorn, Zuudhörn",
+                            "Zuidland, Sland",
+                            "Zuidlaren, Zuudlaoren, Zuudloaren",
+                            "Zuid-Scharwoude, Sûd-Skerwou",
+                            "Zuidveen, Zuudvene, Sevene",
+                            "Zuidveld, Zuudveld",
+                            "Zuidvelde, Zudvèle",
+                            "Zuidwolde, Zuudwòl",
+                            "Zuidwolde, Zuudwolde",
+                            "Zuidzande, Susande",
+                            "Zuilichem, Zui-li-chèm, Zuilichèm, Zuilichem",
+                            "Zuna, Sunnoa",
+                            "Zurich, Surch",
+                            "Zutphen, Zutfent, Zudven",
+                            "Zuurdijk, Zuurdiek",
+                            "Zwaag, De Bangert",
+                            "Zwaagwesteinde, De Westereen",
+                            "Zwagerbosch, Sweagerbosk",
+                            "Zwartsluis, De Sluus",
+                            "Zweeloo, Sweel",
+                            "Zweins, Sweins",
+                            "Zwiggelte, Zwiggel , Zwiggelt",
+                            "Zwinderen, Zwindern",
+                            "Bîk, Beek",
+                            "Lochuizen, Lochoezen",
+                            "Oost, Óóst, Strend",
+                            "Kuivezáánd, Kuivezand",
+                            "Rothem, Raotem",
+                            "Pindorp, De Pin",
+                            "Den Deijl, De Deijl",
+                            "'t Rijpje, t Roipie",
+                            "De Noord, De Noôrd",
+                            "Ètsberg, Etsberg",
+                            "Bijlmermeer , De Bijlmer, Bijlmer",
+                            "Biest, De Biest",
+                            "Maliskamp, Malliskamp",
+                            "Bisselt, Biselt",
+                            "Offenbeek, Óffebek",
+                            "Zandwerven, Sandwerfen",
+                            "de Bril, Bril",
+                            "Dam, Daam",
+                            "Hofgeest, de Hofgeest",
+                            "Kanis, De Kanis",
+                            "Wolfshoek, De Wolfshoek",
+                            "Hogeveen, Hoogeveen in Rijnland",
+                            "Nieuwe-Wetering, Nieuwe Wetering",
+                            "Roverberg, Roversberg",
+                            "Schuddebeurs, Schoddebozze",
+                            "Schuurdaarp, Sjuurdaarp",
+                            "t Nieuwland, t Nieuwland",
+                            "t Ogeveine, t Oveine",
+                            "Het Schouw, t Schouw",
+                            "Traaie, Traaië"
+                        ]
+                    },
+                    "truncate_prefix": {
+                        "length": "15",
+                        "type": "truncate"
+                    },
+                    "www_prefix_filter": {
+                        "pattern": "(?:www\\d?)",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "split_words": {
+                        "type": "word_delimiter",
+                        "split_on_numerics": "false"
+                    },
+                    "ascii_folding": {
+                        "type": "asciifolding",
+                        "preserve_original": "true"
+                    },
+                    "remove_empty": {
+                        "type": "length",
+                        "min": "1"
+                    }
+                },
+                "char_filter": {
+                    "remove_expression_groups": {
+                        "pattern": "([\\.,'\"-])",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "strip_non_alphanum": {
+                        "pattern": "[^0-9a-zA-Z]",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "remove_all_but_letters_and_digits_filter": {
+                        "pattern": "[^A-Za-z0-9]",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "strip_non_digit": {
+                        "pattern": "\\D",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    },
+                    "whitespace_remove": {
+                        "pattern": " ",
+                        "type": "pattern_replace",
+                        "replacement": ""
+                    }
+                },
+                "normalizer": {
+                    "lowercase_normalizer": {
+                        "filter": [
+                            "lowercase"
+                        ]
+                    }
+                },
+                "analyzer": {
+                    "whitespace_lowercase": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "tokenizer": "whitespace"
+                    },
+                    "search_prefixes": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding",
+                            "truncate_prefix"
+                        ],
+                        "char_filter": [
+                            "strip_non_alphanum"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "keyword"
+                    },
+                    "lowercase_analyzer": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "company_address_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding",
+                            "conjoined_straat_filter",
+                            "conjoined_laan_filter",
+                            "conjoined_weg_filter",
+                            "conjoined_singel_filter",
+                            "conjoined_gracht_filter",
+                            "conjoined_plaats_filter",
+                            "conjoined_hof_filter",
+                            "conjoined_steeg_filter",
+                            "conjoined_kade_filter",
+                            "address_synonyms"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "company_address_city_analyzer": {
+                        "filter": [
+                            "ascii_folding",
+                            "lowercase"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "edge_ngram_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "ascii_folding"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "edge_ngram_tokenizer"
+                    },
+                    "phone_analyzer": {
+                        "char_filter": [
+                            "strip_non_digit"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "address_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "whitespace_lowercase_company_name": {
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "tokenizer": "whitespace"
+                    },
+                    "keep_only_ngram_chars_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "remove_empty"
+                        ],
+                        "char_filter": [
+                            "remove_all_but_letters_and_digits_filter"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "edge_ngram_tokenizer"
+                    },
+                    "url_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "www_prefix_filter",
+                            "split_words"
+                        ],
+                        "tokenizer": "classic"
+                    },
+                    "name_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "company_name_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding",
+                            "company_name_synonyms",
+                            "stop",
+                            "stemmer"
+                        ],
+                        "tokenizer": "standard"
+                    },
+                    "prefixes": {
+                        "filter": [
+                            "asciifolding",
+                            "lowercase"
+                        ],
+                        "char_filter": [
+                            "strip_non_alphanum"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "prefixes_ngram"
+                    },
+                    "Address_keep_only_ngram_chars_analyzer": {
+                        "filter": [
+                            "lowercase",
+                            "remove_empty"
+                        ],
+                        "char_filter": [
+                            "remove_all_but_letters_and_digits_filter"
+                        ],
+                        "type": "custom",
+                        "tokenizer": "edge_ngram_postcode"
+                    },
+                    "name_synonyms": {
+                        "filter": [
+                            "lowercase",
+                            "asciifolding",
+                            "company_name_synonyms"
+                        ],
+                        "tokenizer": "whitespace"
+                    },
+                    "company_name_pattern_analyzer": {
+                        "filter": [
+                            "asciifolding",
+                            "lowercase"
+                        ],
+                        "char_filter": [
+                            "remove_expression_groups"
+                        ],
+                        "tokenizer": "pattern"
+                    },
+                    "autocomplete_analyzer": {
+                        "type": "custom",
+                        "filter": [
+                            "lowercase",
+                            "asciifolding"
+                        ],
+                        "tokenizer": "autocomplete_tokenizer"
+                    }
+                },
+                "tokenizer": {
+                    "edge_ngram_tokenizer": {
+                        "token_chars": [
+                            "letter",
+                            "digit"
+                        ],
+                        "min_gram": "3",
+                        "type": "edge_ngram",
+                        "max_gram": "24"
+                    },
+                    "prefixes_ngram": {
+                        "type": "edge_ngram",
+                        "min_gram": "1",
+                        "max_gram": "15"
+                    },
+                    "edge_ngram_postcode": {
+                        "token_chars": [
+                            "letter",
+                            "digit"
+                        ],
+                        "min_gram": "2",
+                        "type": "edge_ngram",
+                        "max_gram": "24"
+                    },
+                    "autocomplete_tokenizer": {
+                        "type": "simple_pattern",
+                        "pattern": "([^ ]&(\\W+|\\_+))+|\\d+|[a-zA-Z]+"
+                    }
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "@timestamp": {
+                "type": "date"
+            },
+            "@version": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "activityCodes": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "address": {
+                "properties": {
+                    "city": {
+                        "type": "text",
+                        "fields": {
+                            "autocomplete": {
+                                "type": "completion",
+                                "analyzer": "autocomplete_analyzer",
+                                "contexts": [
+                                    {
+                                        "name": "country",
+                                        "type": "CATEGORY",
+                                        "path": "countryCode"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "CATEGORY",
+                                        "path": "status"
+                                    },
+                                    {
+                                        "name": "officeType",
+                                        "type": "CATEGORY",
+                                        "path": "officeType"
+                                    },
+                                    {
+                                        "name": "postCode",
+                                        "type": "CATEGORY",
+                                        "path": "address.postCode.raw"
+                                    },
+                                    {
+                                        "name": "vatNo",
+                                        "type": "CATEGORY",
+                                        "path": "vatNo.raw"
+                                    }
+                                ]
+                            },
+                            "ngram": {
+                                "type": "text",
+                                "analyzer": "Address_keep_only_ngram_chars_analyzer"
+                            },
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            },
+                            "synonyms": {
+                                "type": "text",
+                                "analyzer": "company_address_analyzer"
+                            }
+                        },
+                        "analyzer": "company_address_analyzer"
+                    },
+                    "county": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "company_address_analyzer"
+                    },
+                    "line1": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "company_address_analyzer"
+                    },
+                    "line2": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "company_address_analyzer"
+                    },
+                    "line3": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "company_address_analyzer"
+                    },
+                    "postCode": {
+                        "properties": {
+                            "raw": {
+                                "type": "text",
+                                "fields": {
+                                    "autocomplete": {
+                                        "type": "completion",
+                                        "analyzer": "autocomplete_analyzer",
+                                        "contexts": [
+                                            {
+                                                "name": "country",
+                                                "type": "CATEGORY",
+                                                "path": "countryCode"
+                                            },
+                                            {
+                                                "name": "status",
+                                                "type": "CATEGORY",
+                                                "path": "status"
+                                            },
+                                            {
+                                                "name": "officeType",
+                                                "type": "CATEGORY",
+                                                "path": "officeType"
+                                            },
+                                            {
+                                                "name": "vatNo",
+                                                "type": "CATEGORY",
+                                                "path": "vatNo.raw"
+                                            },
+                                            {
+                                                "name": "city",
+                                                "type": "CATEGORY",
+                                                "path": "address.city"
+                                            }
+                                        ]
+                                    },
+                                    "keyword": {
+                                        "type": "keyword"
+                                    }
+                                }
+                            },
+                            "full": {
+                                "type": "keyword"
+                            },
+                            "prefix": {
+                                "type": "keyword"
+                            },
+                            "areaCode": {
+                                "type": "keyword"
+                            }
+                        }
+                    },
+                    "registeredCity": {
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "company_address_analyzer"
+                    },
+                    "simpleValue": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            },
+                            "raw": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_normalizer"
+                            }
+                        },
+                        "analyzer": "company_address_analyzer"
+                    }
+                }
+            },
+            "branchNo": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "companyId": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "name": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion",
+                        "analyzer": "autocomplete_analyzer",
+                        "contexts": [
+                            {
+                                "name": "country",
+                                "type": "CATEGORY",
+                                "path": "countryCode"
+                            },
+                            {
+                                "name": "status",
+                                "type": "CATEGORY",
+                                "path": "status"
+                            },
+                            {
+                                "name": "officeType",
+                                "type": "CATEGORY",
+                                "path": "officeType"
+                            },
+                            {
+                                "name": "postCode",
+                                "type": "CATEGORY",
+                                "path": "address.postCode.raw"
+                            },
+                            {
+                                "name": "vatNo",
+                                "type": "CATEGORY",
+                                "path": "vatNo.raw"
+                            },
+                            {
+                                "name": "city",
+                                "type": "CATEGORY",
+                                "path": "address.city"
+                            }
+                        ]
+                    },
+                    "fallback": {
+                        "type": "text",
+                        "analyzer": "keep_only_ngram_chars_analyzer"
+                    },
+                    "plain": {
+                        "type": "text",
+                        "analyzer": "name_analyzer"
+                    },
+                    "raw": {
+                        "type": "keyword",
+                        "normalizer": "lowercase_normalizer"
+                    },
+                    "synonyms": {
+                        "type": "text",
+                        "analyzer": "company_name_analyzer"
+                    }
+                },
+                "analyzer": "company_name_analyzer"
+            },
+            "connectId": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "countryCode": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "creditLimit": {
+                "type": "double"
+            },
+            "incorporationDate": {
+                "type": "date"
+            },
+            "lastAccountsDate": {
+                "type": "date"
+            },
+            "lastUpdateDate": {
+                "type": "date"
+            },
+            "legalForm": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "legalFormSubcategory": {
+                "type": "long"
+            },
+            "noEmployees": {
+                "properties": {
+                    "from": {
+                        "type": "long"
+                    },
+                    "to": {
+                        "type": "long"
+                    }
+                }
+            },
+            "officeType": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "orgNo": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "phoneNumbers": {
+                "properties": {
+                    "raw": {
+                        "type": "keyword"
+                    },
+                    "full": {
+                        "type": "keyword"
+                    },
+                    "exPrefix": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "preTaxProfit": {
+                "type": "double"
+            },
+            "previousNames": {
+                "type": "text",
+                "fields": {
+                    "fallback": {
+                        "type": "text",
+                        "analyzer": "keep_only_ngram_chars_analyzer"
+                    },
+                    "plain": {
+                        "type": "text",
+                        "analyzer": "name_analyzer"
+                    },
+                    "raw": {
+                        "type": "keyword",
+                        "normalizer": "lowercase_normalizer"
+                    },
+                    "synonyms": {
+                        "type": "text",
+                        "analyzer": "company_name_analyzer"
+                    }
+                },
+                "analyzer": "company_name_analyzer"
+            },
+            "regNo": {
+                "properties": {
+                    "full": {
+                        "type": "keyword"
+                    },
+                    "raw": {
+                        "type": "text",
+                        "fields": {
+                            "autocomplete": {
+                                "type": "completion",
+                                "analyzer": "autocomplete_analyzer",
+                                "contexts": [
+                                    {
+                                        "name": "country",
+                                        "type": "CATEGORY",
+                                        "path": "countryCode"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "CATEGORY",
+                                        "path": "status"
+                                    },
+                                    {
+                                        "name": "officeType",
+                                        "type": "CATEGORY",
+                                        "path": "officeType"
+                                    },
+                                    {
+                                        "name": "postCode",
+                                        "type": "CATEGORY",
+                                        "path": "address.postCode.raw"
+                                    },
+                                    {
+                                        "name": "vatNo",
+                                        "type": "CATEGORY",
+                                        "path": "vatNo.raw"
+                                    },
+                                    {
+                                        "name": "city",
+                                        "type": "CATEGORY",
+                                        "path": "address.city"
+                                    }
+                                ]
+                            },
+                            "keyword": {
+                                "type": "keyword"
+                            }
+                        }
+                    },
+                    "partial": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "regType": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "riskRating": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "riskScore": {
+                "type": "long"
+            },
+            "safeNo": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "status": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "statusDescription": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+            },
+            "vatNo": {
+                "properties": {
+                    "raw": {
+                        "type": "text",
+                        "fields": {
+                            "autocomplete": {
+                                "type": "completion",
+                                "analyzer": "autocomplete_analyzer",
+                                "contexts": [
+                                    {
+                                        "name": "country",
+                                        "type": "CATEGORY",
+                                        "path": "countryCode"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "CATEGORY",
+                                        "path": "status"
+                                    },
+                                    {
+                                        "name": "officeType",
+                                        "type": "CATEGORY",
+                                        "path": "officeType"
+                                    },
+                                    {
+                                        "name": "postCode",
+                                        "type": "CATEGORY",
+                                        "path": "address.postCode.raw"
+                                    },
+                                    {
+                                        "name": "city",
+                                        "type": "CATEGORY",
+                                        "path": "address.city"
+                                    }
+                                ]
+                            },
+                            "keyword": {
+                                "type": "keyword"
+                            }
+                        }
+                    },
+                    "partial": {
+                        "type": "keyword"
+                    },
+                    "rsin": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "tpsFlag": {
+                "type": "keyword"
+            },
+            "tradingNames": {
+                "type": "text",
+                "fields": {
+                    "fallback": {
+                        "type": "text",
+                        "analyzer": "keep_only_ngram_chars_analyzer"
+                    },
+                    "plain": {
+                        "type": "text",
+                        "analyzer": "name_analyzer"
+                    },
+                    "raw": {
+                        "type": "keyword",
+                        "normalizer": "lowercase_normalizer"
+                    },
+                    "synonyms": {
+                        "type": "text",
+                        "analyzer": "company_name_analyzer"
+                    }
+                },
+                "analyzer": "company_name_analyzer"
+            },
+            "turnover": {
+                "properties": {
+                    "from": {
+                        "type": "long"
+                    },
+                    "to": {
+                        "type": "long"
+                    }
+                }
+            },
+            "urls": {
+                "type": "text",
+                "analyzer": "url_analyzer"
+            }
+        }
+    }
+}

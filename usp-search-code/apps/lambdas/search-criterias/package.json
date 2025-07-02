@@ -1,0 +1,49 @@
+{
+  "name": "@usp-monorepo/usp-company-search-criteria",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "This project is a replica of Connects search criteria endpoint.",
+  "main": "index.mjs",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "rollup -c rollup.config.mjs",
+    "test": "node --test",
+    "coverage": "c8 --check-coverage --reporter=lcov --reporter=text npm run test",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@ssh.dev.azure.com:v3/creditsafe/Identity_Resolution/usp-company-search-criteria-lambda"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@middy/core": "^6.3.2",
+    "@middy/http-error-handler": "^6.3.2",
+    "@middy/http-event-normalizer": "^6.3.2",
+    "@middy/http-response-serializer": "^6.3.2",
+    "@middy/input-output-logger": "^6.3.2",
+    "@middy/validator": "^6.3.2",
+    "@usp-monorepo/usp-core": "workspace:*",
+    "http-errors": "^2.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.722.0",
+    "c8": "^10.1.3",
+    "eslint": "^9.17.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "esmock": "^2.6.9"
+  },
+  "c8": {
+    "statements": 42,
+    "branches": 90,
+    "functions": 11,
+    "lines": 42
+  }
+}
