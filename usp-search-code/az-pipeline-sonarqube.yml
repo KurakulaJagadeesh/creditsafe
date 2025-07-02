@@ -1,0 +1,38 @@
+trigger:
+  # Batching prevents multiple automated builds for the same branch
+  # batch: true
+  branches:
+    include:
+      - develop
+      - test
+      - staging
+      - main
+
+pool: Linux-Latest
+
+variables:
+  - group: usp-shared-secrets
+
+stages:
+  - stage: sonarqube
+    displayName: Sonarqube Scan
+    dependsOn:
+    jobs:
+      - job: scan
+        displayName: scan
+        variables:
+          SONAR_SCANNER_OPTS: --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED
+        steps:
+          - task: SonarQubePrepare@7
+            inputs:
+              SonarQube: "Sonarqube-Identity_Resolution"
+              scannerMode: "CLI"
+              configMode: "manual"
+              cliProjectKey: "$(System.TeamProject)-usp-monorepo"
+          - task: SonarQubeAnalyze@7
+            displayName: "Run Code Analysis"
+            inputs:
+              jdkversion: JAVA_HOME_21_X64
+          - task: SonarQubePublish@7
+            inputs:
+              pollingTimeoutSec: "300"

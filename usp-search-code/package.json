@@ -1,0 +1,64 @@
+{
+  "name": "node",
+  "private": true,
+  "scripts": {
+    "preinstall": "npx -y only-allow pnpm",
+    "build": "npm run build --workspaces=@usp-monorepo/usp-company-search @usp-monorepo/usp-director-search",
+    "lint": "pnpm recursive run lint",
+    "lint:fix": "pnpm -r exec eslint . --fix"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^2.22.0",
+    "@aws-lambda-powertools/tracer": "^2.22.0",
+    "@middy/core": "^6.3.2",
+    "@middy/http-error-handler": "^6.3.2",
+    "@middy/http-event-normalizer": "^6.3.2",
+    "@middy/http-response-serializer": "^6.3.2",
+    "@middy/input-output-logger": "^6.3.2",
+    "@opensearch-project/opensearch": "^3.5.1",
+    "axios": "^1.10.0",
+    "ajv": "^8.17.1",
+    "csv-writer": "^1.6.0",
+    "fold-to-ascii": "^5.0.1",
+    "http-errors": "^2.0.0",
+    "json-schema-deref-sync": "^0.14.0",
+    "lodash": "^4.17.21",
+    "query-string": "^9.2.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.25.9",
+    "@babel/plugin-syntax-import-assertions": "^7.26.0",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.17.0",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "c8": "^10.1.3",
+    "eslint": "^9.17.0",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "esmock": "^2.6.9",
+    "fast-levenshtein": "^3.0.0",
+    "semantic-release": "^24.2.1",
+    "globals": "^15.14.0",
+    "rollup": "^4.30.0",
+    "rollup-plugin-progress": "^1.1.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "@octokit/request-error": "^6.1.7",
+      "@octokit/endpoint": "^10.1.3",
+      "@octokit/request": "^9.2.1",
+      "@octokit/plugin-paginate-rest": "^11.4.1"
+    }
+  }
+}

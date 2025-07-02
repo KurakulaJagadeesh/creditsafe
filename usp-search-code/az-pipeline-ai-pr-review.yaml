@@ -1,0 +1,27 @@
+trigger: none
+
+resources:
+  repositories:
+    # Platform Engineering - Terraform Actions - https://dev.azure.com/creditsafe/PlatformEngineering/_git/terraform-actions
+    - repository: templates
+      type: git
+      name: PlatformEngineering/terraform-actions
+      ref: refs/tags/v2
+
+pool: Linux-Latest
+
+variables:
+  - group: terraform-variables
+
+stages:
+  - stage: autoPrReview
+    displayName: AI PR Review
+    dependsOn:
+    condition: eq(variables['Build.Reason'], 'PullRequest')
+    jobs:
+      - template: auto-pr-review.yml@templates
+        parameters:
+          OPENAI_API_KEY: $(openai-pr-review)
+          PAT: $(System.AccessToken)
+          PR_UPDATE_DESCRIPTION: "True"
+          PR_SHOW_CHANGELOG: "False"

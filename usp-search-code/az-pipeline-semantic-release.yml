@@ -1,0 +1,132 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool: Linux-Latest
+
+variables:
+  - group: usp-shared-secrets
+
+stages:
+  - stage: CommitLint
+    displayName: Run CommitLint
+    dependsOn: []
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main'))
+    jobs:
+      - job: Run_CommitLint
+        steps:
+          - checkout: self
+            submodules: false
+            persistCredentials: true
+          - task: NodeTool@0
+            displayName: "Install Node.js"
+            inputs:
+              versionSpec: "22.x"
+          - task: Cache@2
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(Pipeline.Workspace)/.pnpm-store
+            displayName: Cache pnpm
+          - script: |
+              corepack enable
+              corepack prepare pnpm@latest-9 --activate
+              pnpm config set store-dir $(Pipeline.Workspace)/.pnpm-store
+            displayName: "Setup pnpm"
+          - script: pnpm install --frozen-lockfile
+            displayName: "pnpm install --frozen-lockfile"
+          - task: Bash@3
+            displayName: "Run commitlint"
+            inputs:
+              workingDirectory: "$(Build.SourcesDirectory)"
+              targetType: inline
+              script: |
+                echo "Initialising infra pipeline trigger script"
+                echo "trigger-build-pat: $(trigger-build-pat)"
+
+                b64PAT=`echo "$(trigger-build-pat):" | base64`
+
+                if [[ $(trigger-build-pat) != "" ]]; then
+                  URL=https://dev.azure.com/creditsafe/$(System.TeamProject)/_apis/git/repositories/$(Build.Repository.ID)/pullRequests/$(System.PullRequest.PullRequestId)?api-version=7.1                    
+                  
+                  echo "Testing PAT against $URL"
+
+                  TEST_RESPONSE_CODE=`curl -s -o response.txt -w "%{http_code}" -X GET -H "Authorization: Basic $b64PAT" -H "Content-Type: application/json" $URL`
+                  echo "Response code: $TEST_RESPONSE_CODE"
+                  echo "Response Body:"
+                  cat response.txt | jq
+
+                  # Extract the PR title
+                  PR_TITLE=$(jq -r '.title' response.txt)
+
+                  echo "Running commitlint against PR Title: $PR_TITLE"
+                  echo $PR_TITLE | npx commitlint
+                  commitlint_result=$?
+
+                  if [ $commitlint_result -ne 0 ]; then
+                    echo "PR title does not conform to conventional commits."
+                    echo "Running commitlint against commits from last tag..."
+
+                    git fetch --tags                    
+                    BRANCH_NAME=$(echo "$(System.PullRequest.SourceBranch)" | sed 's|^refs/heads/||')
+                    git checkout $BRANCH_NAME
+                    
+                    echo "Running commitlint against commits since last tag..."
+                    echo "npx commitlint --from-last-tag"
+                    npx commitlint --from-last-tag
+                    commitlint_from_tag_result=$?
+
+                    if [ $commitlint_from_tag_result -ne 0 ]; then                      
+                      echo "##vso[task.logissue type=error] Neither PR title nor commits since last tag comply with conventional commits."
+                      exit 1
+                    else
+                      echo "Commits since last tag comply with conventional commits."
+                      echo "##vso[task.logissue type=warning] Ensure you use REBASE AND FAST FORWARD to merge this PR."
+                    fi
+                  else
+                    echo "PR title complies with conventional commits."
+                    echo "##vso[task.logissue type=warning] Ensure you use SQUASH COMMIT to merge this PR."
+                  fi
+                else
+                  echo "trigger-build-pat is missing or empty, skipping trigger"
+                fi
+
+  - stage: Semantic_Release
+    displayName: Semantic Release
+    dependsOn: []
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: Run_Semantic_Release
+        steps:
+          - checkout: self
+            submodules: false
+            persistCredentials: true
+          - task: NodeTool@0
+            displayName: "Install Node.js"
+            inputs:
+              versionSpec: "22.x"
+          - task: Cache@2
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(Pipeline.Workspace)/.pnpm-store
+            displayName: Cache pnpm
+          - script: |
+              corepack enable
+              corepack prepare pnpm@latest-9 --activate
+              pnpm config set store-dir $(Pipeline.Workspace)/.pnpm-store
+            displayName: "Setup pnpm"
+          - script: pnpm install --frozen-lockfile
+            displayName: "pnpm install --frozen-lockfile"
+            workingDirectory: "$(Build.SourcesDirectory)"
+          - script: |
+              echo npx semantic-release
+              npx semantic-release
+            displayName: "Run Semantic Release"
+            workingDirectory: "$(Build.SourcesDirectory)"
+          - script: |
+              git fetch --tags
+              git checkout staging
+              git reset --hard origin/main
+              git push --force-with-lease
+            displayName: "Reset Staging Branch With Main"
+            workingDirectory: "$(Build.SourcesDirectory)"

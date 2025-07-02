@@ -1,0 +1,9 @@
+{
+    // $schema provides code completion hints to IDEs.
+    "$schema": "https://github.com/IBM/audit-ci/raw/main/docs/schema.json",
+    "moderate": true,
+    "allowlist": [
+        // Axios denial of service https://github.com/advisories/GHSA-8hc4-vh64-cxmj
+        "GHSA-8hc4-vh64-cxmj"
+    ]
+}
