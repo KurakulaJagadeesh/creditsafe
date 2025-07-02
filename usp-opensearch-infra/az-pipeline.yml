@@ -1,0 +1,106 @@
+trigger:
+  - develop
+  - test
+  - release/*
+  - master
+
+resources:
+  repositories:
+    # Platform Engineering - Terraform Actions - https://dev.azure.com/creditsafe/PlatformEngineering/_git/terraform-actions
+    - repository: templates
+      type: git
+      name: PlatformEngineering/terraform-actions
+      ref: refs/tags/2.0.0
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - group: terraform-variables
+  - group: usp-shared-secrets
+  - name: TF_STATE_BUCKET
+    value: enviroment.terraform.creditsafe.com
+  - name: TF_STATE_KEY
+    value: Enviroment/workspaces/Identity_Resolution/usp-opensearch-infra
+  - name: TF_STATE_REGION
+    value: eu-west-1
+
+stages:
+  ########################
+  ## Validation
+  ########################
+  - stage: ValidateTerraform
+    displayName: Validate Terraform
+    dependsOn:
+    jobs:
+      - template: azure-terraform-validate.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)
+
+  ########################
+  ## Development
+  ########################
+  - stage: DevTerraformPlan
+    displayName: Plan TF Dev
+    dependsOn: ValidateTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    jobs:
+      - template: azure-terraform-plan.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)
+          PAT: $(tf-pat-secret)
+          TF_ENV: usp-dev-opensearch
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+
+  - stage: DevTerraformApply
+    displayName: Apply TF Dev
+    dependsOn: DevTerraformPlan
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - template: azure-terraform-apply.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)
+          PAT: $(tf-pat-secret)
+          TF_ENV: usp-dev-opensearch
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+
+  ########################
+  ## Test
+  ########################
+  - stage: TestTerraformPlan
+    displayName: Plan TF Test
+    dependsOn: ValidateTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    jobs:
+      - template: azure-terraform-plan.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)
+          PAT: $(tf-pat-secret)
+          TF_ENV: usp-test-opensearch
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_test)
+            - name: opensearch_user
+              value: $(opensearch_user)
+
+  - stage: TestTerraformApply
+    displayName: Apply TF Test
+    dependsOn: TestTerraformPlan
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/test'))
+    jobs:
+      - template: azure-terraform-apply.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)
+          PAT: $(tf-pat-secret)
+          TF_ENV: usp-test-opensearch
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_test)
+            - name: opensearch_user
+              value: $(opensearch_user)
