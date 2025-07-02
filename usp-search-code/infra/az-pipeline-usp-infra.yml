@@ -1,0 +1,395 @@
+trigger:
+  # Batching prevents multiple automated builds for the same branch
+  batch: true
+  branches:
+    include:
+      - develop
+      - test
+      - staging
+      - main
+  paths:
+    include:
+      - infra/**
+
+resources:
+  repositories:
+    # Platform Engineering - Terraform Actions - https://dev.azure.com/creditsafe/PlatformEngineering/_git/terraform-actions
+    - repository: templates
+      type: git
+      name: PlatformEngineering/terraform-actions
+      ref: refs/tags/v2
+
+pool: Linux-Latest
+
+variables:
+  - group: terraform-variables
+  - group: usp-shared-secrets
+  - name: TF_STATE_BUCKET
+    value: enviroment.terraform.creditsafe.com
+  - name: TF_STATE_KEY
+    value: Enviroment/workspaces/search/usp-api-gateway
+  - name: TF_STATE_REGION
+    value: eu-west-1
+
+parameters:
+  - name: removeSafetyNet
+    type: boolean
+    displayName: Remove terraform safetynet for env? (warning this operation is destructive)
+    default: false
+  - name: bypassOpaScan
+    type: boolean
+    displayName: Bypass OPA scan for env?
+    default: false
+
+stages:
+  - stage: ValidateTerraform
+    displayName: Validate Terraform
+    jobs:
+      - template: azure-terraform-validate.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+
+  ########################
+  ## Development
+  ########################
+  - stage: DevPlanTerraform
+    displayName: Plan Dev Terraform
+    dependsOn: ValidateTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - template: azure-terraform-plan.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: dev
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_dev)
+            - name: opensearch_user
+              value: $(opensearch_user)
+            - name: cloudflare_api_token
+              value: $(cloudflare-api-key)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+          bypass_scan: ${{ parameters.bypassOpaScan}}
+
+  - stage: DevApplyTerraform
+    displayName: Apply Dev Terraform
+    dependsOn: DevPlanTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - template: azure-terraform-apply.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: dev
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_dev)
+            - name: opensearch_user
+              value: $(opensearch_user)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+
+  ########################
+  ## Test
+  # #######################
+  # This stage is required to create the VPC endpoint for the test environment and must be run first
+  # to avoid a circular dependency
+
+  # - stage: TestPlanTerraformVpc
+  #   displayName: Plan Test Terraform VPC's
+  #   dependsOn: ValidateTerraform
+  #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  #   jobs:
+  #     - template: azure-terraform-plan.yml@templates
+  #       parameters:
+  #         WorkingDir: $(Build.SourcesDirectory)/infra/infra
+  #         PAT: $(tf-pat-secret)
+  #         TF_ENV: usp-test-infra
+  #         TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+  #         TF_STATE_KEY: $(TF_STATE_KEY)
+  #         TF_STATE_REGION: $(TF_STATE_REGION)
+  #         extraVars:
+  #           - name: opensearch_pass
+  #             value: $(opensearch_pass_test)
+  #           - name: opensearch_user
+  #             value: $(opensearch_user_test)
+  #         target_resource: aws_vpc_endpoint.usp
+
+  # - stage: TestApplyTerraformVpc
+  #   displayName: Apply Test Terraform VPC's
+  #   dependsOn: TestPlanTerraformVpc
+  #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/test'))
+  #   jobs:
+  #     - template: azure-terraform-apply.yml@templates
+  #       parameters:
+  #         WorkingDir: $(Build.SourcesDirectory)/infra/infra
+  #         PAT: $(tf-pat-secret)
+  #         TF_ENV: usp-test-infra
+  #         TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+  #         TF_STATE_KEY: $(TF_STATE_KEY)
+  #         TF_STATE_REGION: $(TF_STATE_REGION)
+  #         extraVars:
+  #           - name: opensearch_pass
+  #             value: $(opensearch_pass_test)
+  #           - name: opensearch_user
+  #             value: $(opensearch_user)
+
+  - stage: TestPlanTerraform
+    displayName: Plan Test Terraform
+    dependsOn: ValidateTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/test'))
+    jobs:
+      - template: azure-terraform-plan.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: usp-test-infra
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_test)
+            - name: opensearch_user
+              value: $(opensearch_user)
+            - name: cloudflare_api_token
+              value: $(cloudflare-api-key)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+          bypass_scan: ${{ parameters.bypassOpaScan}}
+
+  - stage: TestApplyTerraform
+    displayName: Apply Test Terraform
+    dependsOn: TestPlanTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/test'))
+    jobs:
+      - template: azure-terraform-apply.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: usp-test-infra
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_test)
+            - name: opensearch_user
+              value: $(opensearch_user)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+
+  ########################
+  ## Staging
+  # #######################
+  # This stage is required to create the VPC endpoint for the test environment and must be run first
+  # to avoid a circular dependency
+
+  # - stage: StagePlanTerraformVpc
+  #   displayName: Plan Stage Terraform VPC's
+  #   dependsOn: ValidateTerraform
+  #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  #   jobs:
+  #     - template: azure-terraform-plan.yml@templates
+  #       parameters:
+  #         WorkingDir: $(Build.SourcesDirectory)/infra/infra
+  #         PAT: $(tf-pat-secret)
+  #         TF_ENV: stage
+  #         TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+  #         TF_STATE_KEY: $(TF_STATE_KEY)
+  #         TF_STATE_REGION: $(TF_STATE_REGION)
+  #         extraVars:
+  #           - name: opensearch_pass
+  #             value: $(opensearch_pass_stage)
+  #           - name: opensearch_user
+  #             value: $(opensearch_user)
+  #         target_resource: aws_vpc_endpoint.usp
+
+  # - stage: StageApplyTerraformVpc
+  #   displayName: Apply Stage Terraform VPC's
+  #   dependsOn: StagePlanTerraformVpc
+  #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/staging'))
+  #   jobs:
+  #     - template: azure-terraform-apply.yml@templates
+  #       parameters:
+  #         WorkingDir: $(Build.SourcesDirectory)/infra/infra
+  #         PAT: $(tf-pat-secret)
+  #         TF_ENV: stage
+  #         TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+  #         TF_STATE_KEY: $(TF_STATE_KEY)
+  #         TF_STATE_REGION: $(TF_STATE_REGION)
+  #         extraVars:
+  #           - name: opensearch_pass
+  #             value: $(opensearch_pass_stage)
+  #           - name: opensearch_user
+  #             value: $(opensearch_user)
+
+  - stage: StagePlanTerraform
+    displayName: Plan Stage Terraform
+    dependsOn: ValidateTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/staging'))
+    jobs:
+      - template: azure-terraform-plan.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: stage
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_stage)
+            - name: opensearch_user
+              value: $(opensearch_user)
+            - name: cloudflare_api_token
+              value: $(cloudflare-api-key)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+          bypass_scan: ${{ parameters.bypassOpaScan}}
+
+  - stage: StageApplyTerraform
+    displayName: Apply Stage Terraform
+    dependsOn: StagePlanTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/staging'))
+    jobs:
+      - template: azure-terraform-apply.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: stage
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_stage)
+            - name: opensearch_user
+              value: $(opensearch_user)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+
+  ########################
+  ## Production
+  # #######################
+  # This stage is required to create the VPC endpoint for the test environment and must be run first
+  # to avoid a circular dependency
+
+  # - stage: ProdPlanTerraformVpc
+  #   displayName: Plan Prod Terraform VPC's
+  #   dependsOn: ValidateTerraform
+  #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  #   jobs:
+  #     - template: azure-terraform-plan.yml@templates
+  #       parameters:
+  #         WorkingDir: $(Build.SourcesDirectory)/infra/infra
+  #         PAT: $(tf-pat-secret)
+  #         TF_ENV: production
+  #         TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+  #         TF_STATE_KEY: $(TF_STATE_KEY)
+  #         TF_STATE_REGION: $(TF_STATE_REGION)
+  #         extraVars:
+  #           - name: opensearch_pass
+  #             value: $(opensearch_pass_prod)
+  #           - name: opensearch_user
+  #             value: $(opensearch_user)
+  #         target_resource: aws_vpc_endpoint.usp
+
+  # - stage: ProdApplyTerraformVpc
+  #   displayName: Apply Prod Terraform VPC's
+  #   dependsOn: ProdPlanTerraformVpc
+  #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  #   jobs:
+  #     - template: azure-terraform-apply.yml@templates
+  #       parameters:
+  #         WorkingDir: $(Build.SourcesDirectory)/infra/infra
+  #         PAT: $(tf-pat-secret)
+  #         TF_ENV: production
+  #         TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+  #         TF_STATE_KEY: $(TF_STATE_KEY)
+  #         TF_STATE_REGION: $(TF_STATE_REGION)
+  #         extraVars:
+  #           - name: opensearch_pass
+  #             value: $(opensearch_pass_prod)
+  #           - name: opensearch_user
+  #             value: $(opensearch_user)
+
+  - stage: ProdPlanTerraform
+    displayName: Plan Prod Terraform
+    dependsOn: ValidateTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: azure-terraform-plan.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: production
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_prod)
+            - name: opensearch_user
+              value: $(opensearch_user)
+            - name: cloudflare_api_token
+              value: $(cloudflare-api-key)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+          bypass_scan: ${{ parameters.bypassOpaScan}}
+
+  - stage: ProdApplyTerraform
+    displayName: Apply Prod Terraform
+    dependsOn: ProdPlanTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: azure-terraform-apply.yml@templates
+        parameters:
+          WorkingDir: $(Build.SourcesDirectory)/infra/infra
+          PAT: $(tf-pat-secret)
+          TF_ENV: production
+          TF_STATE_BUCKET: $(TF_STATE_BUCKET)
+          TF_STATE_KEY: $(TF_STATE_KEY)
+          TF_STATE_REGION: $(TF_STATE_REGION)
+          extraVars:
+            - name: opensearch_pass
+              value: $(opensearch_pass_prod)
+            - name: opensearch_user
+              value: $(opensearch_user)
+          removeSafetyNet: ${{ parameters.removeSafetyNet }}
+
+  - stage: TriggerProductionIntegrationTests
+    displayName: Trigger Production Integration Tests
+    dependsOn: ProdApplyTerraform
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: TriggerProductionIntegrationTests
+        steps:
+          - task: Bash@3
+            inputs:
+              workingDirectory: $(Pipeline.Workspace)
+              targetType: inline
+              script: |
+                echo "Initialising infra pipeline trigger script"
+                echo "Build.SourceBranch: $(Build.SourceBranch)"
+                echo "trigger-build-pat: $(trigger-build-pat)"
+
+                USP_INFRA_PIPELINE_ID=5623
+
+                b64PAT=`echo "$(trigger-build-pat):" | base64`
+
+                if [[ $(trigger-build-pat) != "" ]]; then
+                  URL=https://dev.azure.com/creditsafe/$(System.TeamProject)/_apis/pipelines/$USP_INFRA_PIPELINE_ID/runs?api-version=7.1-preview.1
+                  DATA='{"stagesToSkip":[],"resources":{"repositories":{"self":{"refName":"main"}}}}'
+                  
+                  echo "Testing PAT against $URL"
+                  echo "Data: $DATA"
+
+                  TEST_RESPONSE_CODE=`curl -s -o response.txt -w "%{http_code}" -X POST -H "Authorization: Basic $b64PAT" -H "Content-Type: application/json" -d $DATA $URL`
+                  echo "Response code: $TEST_RESPONSE_CODE"
+                  echo "Response Body:"
+                  cat response.txt | jq
+                else
+                  echo "trigger-build-pat is missing or empty, skipping trigger"
+                fi
