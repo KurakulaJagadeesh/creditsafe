@@ -1,0 +1,77 @@
+pool: Linux-Latest
+
+trigger:
+  branches:
+    include:
+      - develop
+      - test
+      - staging
+      - main
+  paths:
+    include:
+      - apps/core/config/usp-swagger.json
+
+stages:
+  - stage: deployToDev
+    displayName: Deploy to Dev
+    dependsOn: []
+    condition: eq(variables['Build.SourceBranchName'], 'develop')
+    jobs:
+      - job: uploadToDev
+        steps:
+          - task: S3Upload@1
+            inputs:
+              awsCredentials: "AWS Dev Account-Identity_Resolution"
+              regionName: "eu-west-1"
+              bucketName: "usp-swagger-ui"
+              sourceFolder: "$(Build.SourcesDirectory)/apps/core/config"
+              targetFolder: "dev"
+              globExpressions: "**/usp-swagger.json"
+
+  - stage: deployToTest
+    displayName: Deploy to Test
+    dependsOn: []
+    condition: eq(variables['Build.SourceBranchName'], 'test')
+    jobs:
+      - job: uploadToTest
+        steps:
+          - task: S3Upload@1
+            inputs:
+              awsCredentials: "AWS Dev Account-Identity_Resolution"
+              regionName: "eu-west-1"
+              bucketName: "usp-swagger-ui"
+              sourceFolder: "$(Build.SourcesDirectory)/apps/core/config"
+              targetFolder: "test"
+              globExpressions: "**/usp-swagger.json"
+
+  - stage: deployToStaging
+    displayName: Deploy to Staging
+    dependsOn: []
+    condition: eq(variables['Build.SourceBranchName'], 'staging')
+    jobs:
+      - job: uploadToStaging
+        steps:
+          - task: S3Upload@1
+            inputs:
+              awsCredentials: "AWS Dev Account-Identity_Resolution"
+              regionName: "eu-west-1"
+              bucketName: "usp-swagger-ui"
+              sourceFolder: "$(Build.SourcesDirectory)/apps/core/config"
+              targetFolder: "staging"
+              globExpressions: "**/usp-swagger.json"
+
+  - stage: deployToProd
+    displayName: Deploy to Prod
+    dependsOn: []
+    condition: eq(variables['Build.SourceBranchName'], 'main')
+    jobs:
+      - job: uploadToProd
+        steps:
+          - task: S3Upload@1
+            inputs:
+              awsCredentials: "AWS Dev Account-Identity_Resolution"
+              regionName: "eu-west-1"
+              bucketName: "usp-swagger-ui"
+              sourceFolder: "$(Build.SourcesDirectory)/apps/core/config"
+              targetFolder: "prod"
+              globExpressions: "**/usp-swagger.json"
