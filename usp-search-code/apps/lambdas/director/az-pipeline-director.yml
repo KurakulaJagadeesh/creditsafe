@@ -1,0 +1,25 @@
+trigger:
+  # Batching prevents multiple automated builds for the same branch
+  # batch: true
+  branches:
+    include:
+      - develop
+      - test
+      - staging
+      - main
+
+  paths:
+    include:
+      - apps/lambdas/director/**
+      - apps/core/**
+
+pool: Linux-Latest
+
+variables:
+  - group: usp-shared-secrets
+
+stages:
+  - template: ../azurePipelineTemplates/lambdaTemplate.yml
+    parameters:
+      AppDir: director
+      FunctionName: director-search
